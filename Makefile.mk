@@ -7,6 +7,10 @@ RUNS ?= 1
 # Allow users to override the UART's baud rate.
 UART_BAUD_RATE ?= 115200
 
+ifeq ($(CHERI),1)
+TOOLCHAIN:=LLVM
+endif
+
 ifeq ($(TOOLCHAIN),LLVM)
 CC      := clang
 OBJDUMP := llvm-objdump
@@ -26,7 +30,11 @@ endif
 # Make sure user explicitly defines the target GFE platform.
 ifeq ($(GFE_TARGET),P1)
 ifeq ($(TOOLCHAIN),LLVM)
+ifeq ($(CHERI),1)
+	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imacxcheri -mabi=il32pc64
+else
 	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imac -mabi=ilp32
+endif
 	LIBS += -lclang_rt.builtins-riscv32
 else
 	RISCV_FLAGS += -march=rv32imac -mabi=ilp32
@@ -35,7 +43,11 @@ endif
 	CLOCKS_PER_SEC := 50000000
 else ifeq ($(GFE_TARGET),P2)
 ifeq ($(TOOLCHAIN),LLVM)
+ifeq ($(CHERI),1)
+	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdcxcheri -mabi=l64pc128d
+else
 	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
+endif
 	LIBS += -lclang_rt.builtins-riscv64
 else
 	RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
