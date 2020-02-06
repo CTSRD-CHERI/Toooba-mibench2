@@ -12,6 +12,7 @@
 #include <cheri_init_globals.h>
 
 int main(int, char * __capability * __capability);
+int ee_printf(const char *fmt, ...);
 
 void
 _start_purecap(void) {
@@ -30,8 +31,11 @@ void _exit(int status) {
   }
 }
 
-void handle_trap() {
-  while(1);
+void handle_trap(unsigned long mcause, unsigned long mepc) {
+
+  ee_printf("Unexpected trap %lu @pc=0x%lx\n", mcause, mepc);
+
+  _exit(-1);
 }
 
 void _init(int cid, int nc)
