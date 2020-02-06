@@ -41,6 +41,15 @@ SECTIONS
      . = ALIGN(8);
   }
 
+  /* thread-local data segment */
+  .tdata :
+  {
+    _tls_data = .;
+    *(.tdata.begin)
+    *(.tdata)
+    *(.tdata.end)
+  }
+
   .sdata : {
     __global_pointer$ = . + 0x800;
     *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata*)
@@ -54,14 +63,6 @@ SECTIONS
   }
   .bss : { *(.bss) }
 
-  /* thread-local data segment */
-  .tdata :
-  {
-    _tls_data = .;
-    *(.tdata.begin)
-    *(.tdata)
-    *(.tdata.end)
-  }
   .tbss :
   {
     *(.tbss)
