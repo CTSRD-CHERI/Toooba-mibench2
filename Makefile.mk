@@ -1,6 +1,5 @@
-CC      := riscv64-unknown-elf-gcc
-OBJDUMP := riscv64-unknown-elf-objdump
-OBJCOPY := riscv64-unknown-elf-objcopy
+RISCV_FLAGS ?=
+LIBS ?=
 
 # Allow users to override the number of time to run a benchmark.
 RUNS ?= 1
@@ -8,13 +7,39 @@ RUNS ?= 1
 # Allow users to override the UART's baud rate.
 UART_BAUD_RATE ?= 115200
 
+ifeq ($(TOOLCHAIN),LLVM)
+CC      := clang
+OBJDUMP := llvm-objdump
+OBJCOPY := llvm-objcopy
+RISCV_FLAGS += -mcmodel=medium -mno-relax --sysroot=$(SYSROOT_DIR)
+ifndef SYSROOT_DIR
+$(error PLEASE define SYSROOT_DIR to where libc and run-time libs are installed)
+endif
+else # GCC
+CC      := riscv64-unknown-elf-gcc
+OBJDUMP := riscv64-unknown-elf-objdump
+OBJCOPY := riscv64-unknown-elf-objcopy
+RISCV_FLAGS += -mcmodel=medany
+LIBS := -lgcc
+endif
+
 # Make sure user explicitly defines the target GFE platform.
 ifeq ($(GFE_TARGET),P1)
-	RISCV_FLAGS := -march=rv32imac -mabi=ilp32
+ifeq ($(TOOLCHAIN),LLVM)
+	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imac -mabi=ilp32
+	LIBS += -lclang_rt.builtins-riscv32
+else
+	RISCV_FLAGS += -march=rv32imac -mabi=ilp32
+endif
 	# 50 MHz clock
 	CLOCKS_PER_SEC := 50000000
 else ifeq ($(GFE_TARGET),P2)
-	RISCV_FLAGS := -march=rv64imafdc -mabi=lp64d
+ifeq ($(TOOLCHAIN),LLVM)
+	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
+	LIBS += -lclang_rt.builtins-riscv64
+else
+	RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
+endif
 	# 50 MHz clock
 	CLOCKS_PER_SEC := 50000000
 else ifeq ($(GFE_TARGET),P3)
@@ -48,7 +73,6 @@ CFLAGS := \
 	-DUART_BAUD_RATE=$(UART_BAUD_RATE) \
 	-O2 \
 	-Wall \
-	-mcmodel=medany \
 	-static \
 	-std=gnu99 \
 	-ffast-math \
@@ -62,7 +86,7 @@ LDFLAGS := \
 	-nostartfiles \
 	-lm \
 	-lc \
-	-lgcc \
+	$(LIBS) \
 	-T $(LINKER_SCRIPT)
 
 all: main.elf
