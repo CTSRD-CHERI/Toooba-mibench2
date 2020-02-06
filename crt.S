@@ -186,7 +186,12 @@ zero_regs:
   .align 2
 trap_entry:
 #if __CHERI__
-  ebreak
+.option capmode
+  csrr a0, mcause
+  csrr a1, mepc
+  clgc ct0, handle_trap
+  cjr  ct0
+.option nocapmode
 #endif
   addi sp, sp, -272
 
