@@ -80,10 +80,6 @@ zero_regs:
 #else
   bltz t0, 1f
 #endif
-2:
-  li a0, 1
-  sw a0, tohost, t0
-  j 2b
 1:
 
 #ifdef __riscv_flen
@@ -128,7 +124,7 @@ zero_regs:
 #endif
 
   # initialize trap vector$
-  la t0, trap_entry$
+  la t0, trap_entry
   csrw mtvec, t0
 
   # initialize global pointer
@@ -282,11 +278,3 @@ _tdata_end:
 .section ".tbss.end"
 .globl _tbss_end
 _tbss_end:
-
-.section ".tohost","aw",@progbits
-.align 6
-.globl tohost
-tohost: .dword 0
-.align 6
-.globl fromhost
-fromhost: .dword 0

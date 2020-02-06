@@ -59,7 +59,7 @@ int main(void)
     //printf("Run %d\n\r", run+1);
     if (benchmark() != 0) {
       ee_printf("FATAL ERROR: Benchmark failed.\n");
-      tohost_exit(1);
+      //tohost_exit(1);
     }
   }
   t_end = get_cycle_count();
