@@ -39,5 +39,5 @@ void _init(int cid, int nc)
   // only single-threaded programs should ever get here.
   int ret = main(0, 0);
 
-  while(1);
+  _exit(ret);
 }
