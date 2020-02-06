@@ -21,6 +21,15 @@ _start_purecap(void) {
 }
 #endif
 
+void _exit(int status) {
+
+  ee_printf("Exit code %d", status);
+
+  while (1) {
+    asm volatile("ebreak");
+  }
+}
+
 void handle_trap() {
   while(1);
 }
