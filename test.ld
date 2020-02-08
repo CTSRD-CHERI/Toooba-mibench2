@@ -28,7 +28,7 @@ SECTIONS
   .text : { *(.text) }
 
   /* data segment */
-  .data : { *(.data) }
+  .data : ALIGN(8) { *(.data) }
 
   __cap_relocs : {
      . = ALIGN(8);
@@ -55,13 +55,15 @@ SECTIONS
 
   /* bss segment */
   .sbss : {
+   . = ALIGN(8);
     *(.sbss .sbss.* .gnu.linkonce.sb.*)
     *(.scommon)
   }
-  .bss : { *(.bss) }
+  .bss : { . = ALIGN(8); *(.bss) }
 
   .tbss :
   {
+    . = ALIGN(8);
     *(.tbss)
     *(.tbss.end)
   }
