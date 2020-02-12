@@ -11,9 +11,6 @@
 #if __CHERI__
 #include <cheri_init_globals.h>
 
-int main(int, char * __capability * __capability);
-int ee_printf(const char *fmt, ...);
-
 void
 _start_purecap(void) {
   cheri_init_globals_3(__builtin_cheri_global_data_get(),
@@ -21,6 +18,9 @@ _start_purecap(void) {
       __builtin_cheri_global_data_get());
 }
 #endif
+
+int main(int, char **);
+int ee_printf(const char *fmt, ...);
 
 void _exit(int status) {
 
