@@ -25,26 +25,18 @@ SECTIONS
   . = 0xC0000000;
   .text.init : { *(.text.init) }
 
-  . = ALIGN(0x1000);
-  .tohost : { *(.tohost) }
-
   .text : { *(.text) }
 
   /* data segment */
-  .data : { *(.data) }
+  .data : ALIGN(8) { *(.data) }
 
-  .sdata : {
-    __global_pointer$ = . + 0x800;
-    *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata*)
-    *(.sdata .sdata.* .gnu.linkonce.s.*)
+  __cap_relocs : {
+     . = ALIGN(8);
   }
 
-  /* bss segment */
-  .sbss : {
-    *(.sbss .sbss.* .gnu.linkonce.sb.*)
-    *(.scommon)
+  .captable : {
+     . = ALIGN(8);
   }
-  .bss : { *(.bss) }
 
   /* thread-local data segment */
   .tdata :
@@ -54,8 +46,24 @@ SECTIONS
     *(.tdata)
     *(.tdata.end)
   }
+
+  .sdata : {
+    __global_pointer$ = . + 0x800;
+    *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata*)
+    *(.sdata .sdata.* .gnu.linkonce.s.*)
+  }
+
+  /* bss segment */
+  .sbss : {
+   . = ALIGN(8);
+    *(.sbss .sbss.* .gnu.linkonce.sb.*)
+    *(.scommon)
+  }
+  .bss : { . = ALIGN(8); *(.bss) }
+
   .tbss :
   {
+    . = ALIGN(8);
     *(.tbss)
     *(.tbss.end)
   }

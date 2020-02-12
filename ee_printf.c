@@ -568,12 +568,13 @@ get_qualifier:
 
 void uart_send_char(char c) {
   // Transmit the character using the UART 16550 on the VCU118.
-  uart0_txchar((int) c);
+  if (uart0_txchar((int) c) == '\n')
+    uart0_txchar((int) '\r');
 }
 
 int ee_printf(const char *fmt, ...)
 {
-  char buf[256],*p;
+  char buf[4096],*p;
   va_list args;
   int n=0;
 
