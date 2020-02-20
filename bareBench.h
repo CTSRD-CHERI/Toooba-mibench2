@@ -77,7 +77,7 @@ int main(void)
   return 0;
 }
 
-#define printf(...)
+//#define printf(...)
 #define fprintf(...)
 #define fflush(...)
 #define main(...) benchmark(__VA_ARGS__)

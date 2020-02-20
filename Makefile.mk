@@ -88,6 +88,7 @@ CFLAGS := \
 	-DHAS_FLOAT=1 \
 	-DRUNS=$(RUNS) \
 	-DUART_BAUD_RATE=$(UART_BAUD_RATE) \
+	-Dprintf=ee_printf \
 	-O2 \
 	-Wall \
 	-static \
