@@ -56,10 +56,20 @@ SECTIONS
   /* bss segment */
   .sbss : {
    . = ALIGN(8);
+    __sbss_start = .;
     *(.sbss .sbss.* .gnu.linkonce.sb.*)
     *(.scommon)
+   . = ALIGN(8);
+    __sbss_end = .;
   }
-  .bss : { . = ALIGN(8); *(.bss) }
+
+  .bss : {
+    . = ALIGN(8);
+    __bss_start = .;
+    *(.bss)
+    . = ALIGN(8);
+    __bss_end = .;
+  }
 
   .tbss :
   {
