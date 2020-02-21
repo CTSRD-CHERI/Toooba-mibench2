@@ -82,6 +82,32 @@ zero_regs:
 #endif
 1:
 
+init_bss:
+    /* init bss section */
+    la  a0, __bss_start
+    la  a1, __bss_end
+    li  a2, 0x0
+    jal fill_block
+
+init_sbss:
+    /* init bss section */
+    la  a0, __sbss_start
+    la  a1, __sbss_end
+    li  a2, 0x0
+    jal fill_block
+
+    j init_trap
+
+/* Fills memory blocks */
+fill_block:
+    bgeu  a0, a1, fb_end
+    sw    a2, 0(a0)
+    addi  a0, a0, 4
+    j   fill_block
+fb_end:
+    ret
+
+init_trap:
 #ifdef __riscv_flen
   # initialize FPU if we have one
   la t0, 1f
