@@ -7,7 +7,7 @@ do
 	echo "Building mibench2 benchmark $(dirname $0)/$PROG"
 	cd $(dirname $0)/$PROG
 	make GFE_TARGET=$1 clean
-	make GFE_TARGET=$1
+	make GFE_TARGET=$1 RUNS=$2
 	cp main.elf ../$PROG.elf
 	make GFE_TARGET=$1 clean
 	echo '`-> Done'
