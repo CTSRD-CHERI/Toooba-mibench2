@@ -15,6 +15,13 @@ ifeq ($(TOOLCHAIN),LLVM)
 CC      := clang
 OBJDUMP := llvm-objdump
 OBJCOPY := llvm-objcopy
+ifeq ($(GFE_TARGET),P1)
+SYSROOT_DIR=/opt/riscv-llvm/riscv32-unknown-elf/
+else
+SYSROOT_DIR=/opt/riscv-llvm/riscv64-unknown-elf/
+endif # sysroot set
+
+
 RISCV_FLAGS += -mcmodel=medium -mno-relax --sysroot=$(SYSROOT_DIR)
 ifndef SYSROOT_DIR
 $(error PLEASE define SYSROOT_DIR to where libc and run-time libs are installed)
@@ -31,11 +38,11 @@ endif
 ifeq ($(GFE_TARGET),P1)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imacxcheri -mabi=il32pc64
+	RISCV_FLAGS += -target riscv32 -march=rv32imacxcheri -mabi=il32pc64
 else
-	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imac -mabi=ilp32
+	RISCV_FLAGS += -target riscv32 -march=rv32imac -mabi=ilp32
 endif
-	LIBS += -lclang_rt.builtins-riscv32
+	LIBS += -lc -lclang_rt.builtins-riscv32
 else
 	RISCV_FLAGS += -march=rv32imac -mabi=ilp32
 endif
@@ -45,9 +52,9 @@ endif
 else ifeq ($(GFE_TARGET),P2)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdcxcheri -mabi=l64pc128d
+	RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
+	RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64d
 endif
 	LIBS += -lclang_rt.builtins-riscv64
 else
@@ -65,9 +72,9 @@ endif
 else ifeq ($(GFE_TARGET),P3)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-  RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdcxcheri -mabi=l64pc128d
+  RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-  RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
+  RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64d
 endif
   LIBS += -lclang_rt.builtins-riscv64
 else
@@ -114,6 +121,8 @@ CFLAGS := \
 	-I$(COMMON_DIR)
 ASFLAGS := $(CFLAGS)
 LDFLAGS := \
+	-fuse-ld=lld \
+	-v \
 	-static \
 	-nostdlib \
 	-nostartfiles \
