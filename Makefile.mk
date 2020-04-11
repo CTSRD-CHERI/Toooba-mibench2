@@ -1,4 +1,4 @@
-RISCV_FLAGS ?=
+\RISCV_FLAGS ?=
 LIBS ?=
 
 # Allow users to override the number of time to run a benchmark.
@@ -61,11 +61,11 @@ else
 	RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
 ifeq ($(CHERI),1)
-  # 50 MHz clock on the current P2 CHERI GFE
-  CLOCKS_PER_SEC := 50000000
+# 50 MHz clock on the current P2 CHERI GFE
+CLOCKS_PER_SEC := 50000000
 else
-  # 100 MHz clock
-  CLOCKS_PER_SEC := 100000000
+# 100 MHz clock
+CLOCKS_PER_SEC := 100000000
 endif
 
 # This section copied from Coremark Makefile.
@@ -80,8 +80,8 @@ endif
 else
   RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
-	# 25 MHz clock
-	CLOCKS_PER_SEC := 25000000
+# 25 MHz clock
+CLOCKS_PER_SEC := 25000000
 
 else #No proc defined
 $(error Please define GFE_TARGET to P1, P2, or P3 (e.g. make GFE_TARGET=P1))
