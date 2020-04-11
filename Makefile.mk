@@ -1,4 +1,4 @@
-RISCV_FLAGS ?=
+\RISCV_FLAGS ?=
 LIBS ?=
 
 # Allow users to override the number of time to run a benchmark.
@@ -15,6 +15,13 @@ ifeq ($(TOOLCHAIN),LLVM)
 CC      := clang
 OBJDUMP := llvm-objdump
 OBJCOPY := llvm-objcopy
+ifeq ($(GFE_TARGET),P1)
+SYSROOT_DIR=/opt/riscv-llvm/riscv32-unknown-elf/
+else
+SYSROOT_DIR=/opt/riscv-llvm/riscv64-unknown-elf/
+endif # sysroot set
+
+
 RISCV_FLAGS += -mcmodel=medium -mno-relax --sysroot=$(SYSROOT_DIR)
 ifndef SYSROOT_DIR
 $(error PLEASE define SYSROOT_DIR to where libc and run-time libs are installed)
@@ -31,11 +38,11 @@ endif
 ifeq ($(GFE_TARGET),P1)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imacxcheri -mabi=il32pc64
+	RISCV_FLAGS += -target riscv32 -march=rv32imacxcheri -mabi=il32pc64
 else
-	RISCV_FLAGS += -target riscv32-unknown-elf -march=rv32imac -mabi=ilp32
+	RISCV_FLAGS += -target riscv32 -march=rv32im -mabi=ilp32
 endif
-	LIBS += -lclang_rt.builtins-riscv32
+	LIBS += -lc -lclang_rt.builtins-riscv32
 else
 	RISCV_FLAGS += -march=rv32imac -mabi=ilp32
 endif
@@ -45,36 +52,36 @@ endif
 else ifeq ($(GFE_TARGET),P2)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdcxcheri -mabi=l64pc128d
+	RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-	RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
+	RISCV_FLAGS += -target riscv64 -march=rv64imac -mabi=lp64
 endif
-	LIBS += -lclang_rt.builtins-riscv64
+	LIBS += -lc -lclang_rt.builtins-riscv64
 else
 	RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
 ifeq ($(CHERI),1)
-  # 50 MHz clock on the current P2 CHERI GFE
-  CLOCKS_PER_SEC := 50000000
+# 50 MHz clock on the current P2 CHERI GFE
+CLOCKS_PER_SEC := 50000000
 else
-  # 100 MHz clock
-  CLOCKS_PER_SEC := 100000000
+# 100 MHz clock
+CLOCKS_PER_SEC := 100000000
 endif
 
 # This section copied from Coremark Makefile.
 else ifeq ($(GFE_TARGET),P3)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-  RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdcxcheri -mabi=l64pc128d
+  RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-  RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
+  RISCV_FLAGS += -target riscv64 -march=rv64imac -mabi=lp64
 endif
-  LIBS += -lclang_rt.builtins-riscv64
+  LIBS += -lc -lclang_rt.builtins-riscv64
 else
   RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
-	# 25 MHz clock
-	CLOCKS_PER_SEC := 25000000
+# 25 MHz clock
+CLOCKS_PER_SEC := 25000000
 
 else #No proc defined
 $(error Please define GFE_TARGET to P1, P2, or P3 (e.g. make GFE_TARGET=P1))
@@ -114,6 +121,8 @@ CFLAGS := \
 	-I$(COMMON_DIR)
 ASFLAGS := $(CFLAGS)
 LDFLAGS := \
+	-fuse-ld=lld \
+	-v \
 	-static \
 	-nostdlib \
 	-nostartfiles \
