@@ -40,7 +40,7 @@ ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
 	RISCV_FLAGS += -target riscv32 -march=rv32imacxcheri -mabi=il32pc64
 else
-	RISCV_FLAGS += -target riscv32 -march=rv32imac -mabi=ilp32
+	RISCV_FLAGS += -target riscv32 -march=rv32im -mabi=ilp32
 endif
 	LIBS += -lc -lclang_rt.builtins-riscv32
 else
@@ -54,9 +54,9 @@ ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
 	RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-	RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64d
+	RISCV_FLAGS += -target riscv64 -march=rv64imac -mabi=lp64
 endif
-	LIBS += -lclang_rt.builtins-riscv64
+	LIBS += -lc -lclang_rt.builtins-riscv64
 else
 	RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
@@ -74,9 +74,9 @@ ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
   RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-  RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64d
+  RISCV_FLAGS += -target riscv64 -march=rv64imac -mabi=lp64
 endif
-  LIBS += -lclang_rt.builtins-riscv64
+  LIBS += -lc -lclang_rt.builtins-riscv64
 else
   RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
