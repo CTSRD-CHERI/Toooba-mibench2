@@ -15,7 +15,7 @@ ifeq ($(TOOLCHAIN),LLVM)
 CC      := clang
 OBJDUMP := llvm-objdump
 OBJCOPY := llvm-objcopy
-TOOLCHAIN_LINKER_FLAGS := -fuse-ld=lld \
+TOOLCHAIN_LINKER_FLAGS := -fuse-ld=lld
 ifeq ($(GFE_TARGET),P1)
 SYSROOT_DIR=/opt/riscv-llvm/riscv32-unknown-elf/
 else
