@@ -15,6 +15,7 @@ ifeq ($(TOOLCHAIN),LLVM)
 CC      := clang
 OBJDUMP := llvm-objdump
 OBJCOPY := llvm-objcopy
+TOOLCHAIN_LINKER_FLAGS := -fuse-ld=lld \
 ifeq ($(GFE_TARGET),P1)
 SYSROOT_DIR=/opt/riscv-llvm/riscv32-unknown-elf/
 else
@@ -32,6 +33,7 @@ OBJDUMP := riscv64-unknown-elf-objdump
 OBJCOPY := riscv64-unknown-elf-objcopy
 RISCV_FLAGS += -mcmodel=medany
 LIBS := -lgcc
+TOOLCHAIN_LINKER_FLAGS =
 endif
 
 # Make sure user explicitly defines the target GFE platform.
@@ -121,7 +123,6 @@ CFLAGS := \
 	-I$(COMMON_DIR)
 ASFLAGS := $(CFLAGS)
 LDFLAGS := \
-	-fuse-ld=lld \
 	-v \
 	-static \
 	-nostdlib \
@@ -129,7 +130,8 @@ LDFLAGS := \
 	-lm \
 	-lc \
 	$(LIBS) \
-	-T $(LINKER_SCRIPT)
+	-T $(LINKER_SCRIPT) \
+	$(TOOLCHAIN_LINKER_FLAGS)
 
 all: main.elf
 
