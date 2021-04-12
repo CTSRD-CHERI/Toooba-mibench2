@@ -1,9 +1,9 @@
-# MiBench2 for SSITH
+# MiBench2 for BESSPIN
 
 This repository is a fork of the
 [MiBench2](https://github.com/impedimentToProgress/MiBench2)
-benchmark ported for the SSITH project.
-Please use the `ssith` branch for all SSITH-related work.
+benchmark ported for the BESSPIN project.
+Please use the `master` and `develop` branches for all BESSPIN-related work.
 
 Every directory in this project is a self-contained benchmark with a standalone
 `Makefile`.
