@@ -11,10 +11,11 @@ ifeq ($(CHERI),1)
 TOOLCHAIN:=LLVM
 endif
 
+#CCDIR   ?= /Users/jonathanwoodruff/cheribuild/llvm-build/bin
 ifeq ($(TOOLCHAIN),LLVM)
-CC      := clang
-OBJDUMP := llvm-objdump
-OBJCOPY := llvm-objcopy
+CC      := CCDIR/clang
+OBJDUMP := CCDIR/llvm-objdump
+OBJCOPY := CCDIR/llvm-objcopy
 TOOLCHAIN_LINKER_FLAGS := -fuse-ld=lld
 ifeq ($(GFE_TARGET),P1)
 SYSROOT_DIR=/opt/riscv-llvm/riscv32-unknown-elf/
@@ -37,46 +38,11 @@ TOOLCHAIN_LINKER_FLAGS =
 endif
 
 # Make sure user explicitly defines the target GFE platform.
-ifeq ($(GFE_TARGET),P1)
-ifeq ($(TOOLCHAIN),LLVM)
-ifeq ($(CHERI),1)
-	RISCV_FLAGS += -target riscv32 -march=rv32imacxcheri -mabi=il32pc64
-else
-	RISCV_FLAGS += -target riscv32 -march=rv32im -mabi=ilp32
-endif
-	LIBS += -lc -lclang_rt.builtins-riscv32
-else
-	RISCV_FLAGS += -march=rv32imac -mabi=ilp32
-endif
-	# 50 MHz clock
-	CLOCKS_PER_SEC := 50000000
-
-else ifeq ($(GFE_TARGET),P2)
-ifeq ($(TOOLCHAIN),LLVM)
-ifeq ($(CHERI),1)
-	RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
-else
-	RISCV_FLAGS += -target riscv64 -march=rv64imac -mabi=lp64
-endif
-	LIBS += -lc -lclang_rt.builtins-riscv64
-else
-	RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
-endif
-ifeq ($(CHERI),1)
-# 50 MHz clock on the current P2 CHERI GFE
-CLOCKS_PER_SEC := 50000000
-else
-# 100 MHz clock
-CLOCKS_PER_SEC := 100000000
-endif
-
-# This section copied from Coremark Makefile.
-else ifeq ($(GFE_TARGET),P3)
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
   RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
-  RISCV_FLAGS += -target riscv64 -march=rv64imac -mabi=lp64
+  RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64
 endif
   LIBS += -lc -lclang_rt.builtins-riscv64
 else
@@ -84,10 +50,6 @@ else
 endif
 # 25 MHz clock
 CLOCKS_PER_SEC := 25000000
-
-else #No proc defined
-$(error Please define GFE_TARGET to P1, P2, or P3 (e.g. make GFE_TARGET=P1))
-endif
 
 # Define sources and compilation outputs.
 COMMON_DIR := ..

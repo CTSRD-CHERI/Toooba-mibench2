@@ -19,16 +19,19 @@ _start_purecap(void) {
 }
 #endif
 
+extern volatile int tohost = 0;
+
 int main(int, char **);
 int ee_printf(const char *fmt, ...);
 
+void exit(int status) {_exit(status);}
+
 void _exit(int status) {
-
   ee_printf("Exit code %d", status);
-
   while (1) {
-    asm volatile("ebreak");
+    tohost = ((status<<1)|1);
   }
+  
 }
 
 void handle_trap(unsigned long mcause, unsigned long mepc) {

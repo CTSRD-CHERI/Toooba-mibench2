@@ -82,19 +82,41 @@ zero_regs:
 #endif
 1:
 
+  # initialize global pointer
+.option push
+.option norelax
+  la gp, __global_pointer$
+.option pop
+
+  la  tp, _end + 63
+  and tp, tp, -64
+
+  # get core id
+  csrr a0, mhartid
+  # for now, assume only 1 core
+  li a1, 1
+1:bgeu a0, a1, 1b
+
+  # give each core 128KB of stack + TLS
+#define STKSHIFT 17
+  sll a2, a0, STKSHIFT
+  add tp, tp, a2
+  add sp, a0, 1
+  sll sp, sp, STKSHIFT
+
 init_bss:
     /* init bss section */
     la  a0, __bss_start
     la  a1, __bss_end
     li  a2, 0x0
-    jal fill_block
+    // jal fill_block // No need to zero in simulation, which is purpose of this fork of the repository.
 
 init_sbss:
     /* init bss section */
     la  a0, __sbss_start
     la  a1, __sbss_end
     li  a2, 0x0
-    jal fill_block
+    // jal fill_block // No need to zero in simulation, which is purpose of this fork of the repository.
 
     j init_trap
 
@@ -103,7 +125,7 @@ fill_block:
     bgeu  a0, a1, fb_end
     sw    a2, 0(a0)
     addi  a0, a0, 4
-    j   fill_block
+    //j   fill_block // No need to zero in simulation, which is purpose of this fork of the repository.
 fb_end:
     ret
 
@@ -152,28 +174,6 @@ init_trap:
   # initialize trap vector$
   la t0, trap_entry
   csrw mtvec, t0
-
-  # initialize global pointer
-.option push
-.option norelax
-  la gp, __global_pointer$
-.option pop
-
-  la  tp, _end + 63
-  and tp, tp, -64
-
-  # get core id
-  csrr a0, mhartid
-  # for now, assume only 1 core
-  li a1, 1
-1:bgeu a0, a1, 1b
-
-  # give each core 128KB of stack + TLS
-#define STKSHIFT 17
-  sll a2, a0, STKSHIFT
-  add tp, tp, a2
-  add sp, a0, 1
-  sll sp, sp, STKSHIFT
 
 #if __CHERI__
   cfromptr    csp, ddc, sp # Get DDC

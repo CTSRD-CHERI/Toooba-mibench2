@@ -1,5 +1,3 @@
-#ifdef BARE_METAL
-
 //#include <stdio.h>
 #include <stdint.h>
 
@@ -8,7 +6,6 @@
 
 int benchmark();
 int ee_printf(const char *fmt, ...);
-void tohost_exit(uintptr_t code);  // From syscalls.c
 
 #ifndef RUNS
 #define RUNS 1
@@ -49,9 +46,6 @@ int main(void)
   uart0_init();
   ee_printf("Starting benchmark...\n");
 
-  // Run baseline
-  //puts("Baseline\n\r");
-  //benchmark();
   t_start = get_cycle_count();
   for(run = 0; run < RUNS; ++run)
   {
@@ -59,7 +53,7 @@ int main(void)
     //printf("Run %d\n\r", run+1);
     if (benchmark() != 0) {
       ee_printf("FATAL ERROR: Benchmark failed.\n");
-      //tohost_exit(1);
+      _exit(1);
     }
   }
   t_end = get_cycle_count();
@@ -74,12 +68,10 @@ int main(void)
   ee_printf("Seconds elapsed: %f\n", test_duration_seconds);
   ee_printf("Iterations per second: %f\n", iterations_per_second);
 
-  return 0;
+  return 0; // Not going to run.
 }
 
 //#define printf(...)
 #define fprintf(...)
 #define fflush(...)
 #define main(...) benchmark(__VA_ARGS__)
-
-#endif
