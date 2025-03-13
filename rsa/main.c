@@ -676,9 +676,4 @@ int main (void) {
 
     return 11;
 }
-    for(cnt = 0; cnt < KEYLEN; ++cnt) {
-        if (ciphertext[cnt] != correct[cnt]) {
-            test_error("Incorrect ciphertext\n");
-        }
-    }
 

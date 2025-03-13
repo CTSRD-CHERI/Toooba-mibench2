@@ -22,22 +22,17 @@ _start_purecap(void) {
 extern volatile int tohost = 0;
 
 int main(int, char **);
-int ee_printf(const char *fmt, ...);
-
-void exit(int status) {_exit(status);}
 
 void _exit(int status) {
-  ee_printf("Exit code %d", status);
   while (1) {
     tohost = ((status<<1)|1);
   }
   
 }
 
+void exit(int status) {_exit(status);}
+
 void handle_trap(unsigned long mcause, unsigned long mepc) {
-
-  ee_printf("Unexpected trap %lu @pc=0x%lx\n", mcause, mepc);
-
   _exit(-1);
 }
 

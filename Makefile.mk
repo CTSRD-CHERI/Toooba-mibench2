@@ -58,9 +58,7 @@ COMMON_ASM_SRCS := \
 	$(COMMON_DIR)/crt.S
 COMMON_C_SRCS := \
 	$(COMMON_DIR)/syscalls.c \
-	$(COMMON_DIR)/uart_16550.c \
-	$(COMMON_DIR)/cvt.c \
-	$(COMMON_DIR)/ee_printf.c
+	$(COMMON_DIR)/cvt.c
 COMMON_OBJS := \
 	$(patsubst %.c,%.o,$(notdir $(COMMON_C_SRCS))) \
 	$(patsubst %.S,%.o,$(notdir $(COMMON_ASM_SRCS)))
@@ -74,7 +72,6 @@ CFLAGS := \
 	-DHAS_FLOAT=1 \
 	-DRUNS=$(RUNS) \
 	-DUART_BAUD_RATE=$(UART_BAUD_RATE) \
-	-Dprintf=ee_printf \
 	-O2 \
 	-Wall \
 	-static \
