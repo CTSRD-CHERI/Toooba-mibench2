@@ -68,6 +68,8 @@ int main(void)
   ee_printf("Seconds elapsed: %f\n", test_duration_seconds);
   ee_printf("Iterations per second: %f\n", iterations_per_second);
 
+  _exit(test_duration_cycles);
+
   return 0; // Not going to run.
 }
 
