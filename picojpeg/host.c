@@ -1,6 +1,6 @@
 
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 #include <string.h>
 
 #include "picojpeg.h"
@@ -15,7 +15,7 @@ unsigned char pjpeg_need_bytes_callback(unsigned char* pBuf, unsigned char buf_s
 //   uint n;
   // pCallback_data;
 
-    printf("callback buf_size %u\n",buf_size);
+    //printf("callback buf_size %u\n",buf_size);
 
 //   n = min(g_nInFileSize - g_nInFileOfs, buf_size);
    //if (n && (fread(pBuf, 1, n, g_pInFile) != n))
@@ -60,7 +60,7 @@ int main ( void )
 
     if (status)
     {
-        printf("pjpeg_decode_init() failed with status %u\n", status);
+        //printf("pjpeg_decode_init() failed with status %u\n", status);
         return(1);
     }
     //x=0;
