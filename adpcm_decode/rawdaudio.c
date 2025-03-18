@@ -1,13 +1,13 @@
 /* testd - Test adpcm decoder */
 
 #include "adpcm.h"
-#include <stdio.h>
+//#include <stdio.h>
 #include "../bareBench.h"
 #include "input.h"
 
 
 
-#define NSAMPLES 1000
+#define NSAMPLES 100
 #define NINC  (NSAMPLES / 2)
 
 short	sbuf[NSAMPLES];
@@ -18,7 +18,7 @@ int main() {
     unsigned char * currentN = test_data;
     int maxN = sizeof(test_data);
     
-    printf("Initial valprev=%d, index=%d\n", state.valprev, state.index);
+    //printf("Initial valprev=%d, index=%d\n", state.valprev, state.index);
     
     while(1) {
         int bytesIntoRead = ((unsigned int)currentN) - ((unsigned int)test_data);
@@ -32,6 +32,6 @@ int main() {
         //write(1, sbuf, n*4);
     }
     
-    printf("Final valprev=%d, index=%d\n", state.valprev, state.index);
+    //printf("Final valprev=%d, index=%d\n", state.valprev, state.index);
     return 0;
 }
