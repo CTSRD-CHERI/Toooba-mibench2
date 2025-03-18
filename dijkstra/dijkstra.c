@@ -154,8 +154,9 @@ int main(int argc, char *argv[]) {
   int i,j;
    /* make a fully connected matrix */
    // see input.h
-  /* finds 10 shortest paths between nodes */
-  for (i=1;i<11;i++) {
+  /* finds 2 shortest paths between nodes */
+  /* otherwise, too long for simulation */
+  for (i=1;i<3;i++) {
 			int x=i*31%NUM_NODES;
       int y=i*13%NUM_NODES;
       dijkstra(x,y);
