@@ -155,9 +155,10 @@ int main(int argc, char *argv[]) {
    /* make a fully connected matrix */
    // see input.h
   /* finds 10 shortest paths between nodes */
-  for (i=0,j=NUM_NODES/2;i<NUM_NODES;i++,j++) {
-			j=j%NUM_NODES;
-      dijkstra(i,j);
+  for (i=1;i<11;i++) {
+			int x=i*31%NUM_NODES;
+      int y=i*13%NUM_NODES;
+      dijkstra(x,y);
   }
   return 0;
 }
