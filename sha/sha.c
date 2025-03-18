@@ -7,7 +7,7 @@
 /* activated by defining USE_MODIFIED_SHA */
 
 #include <stdlib.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <string.h>
 #include "sha.h"
 
@@ -207,7 +207,10 @@ void sha_stream(SHA_INFO *sha_info, char *fin)
 
 /* print a SHA digest */
 
+volatile long long output;
+
 void sha_print(SHA_INFO *sha_info)
 {
-   printf("%08lx %08lx %08lx %08lx %08lx\n", sha_info->digest[0], sha_info->digest[1], sha_info->digest[2], sha_info->digest[3], sha_info->digest[4]);
+   //printf("%08lx %08lx %08lx %08lx %08lx\n", sha_info->digest[0], sha_info->digest[1], sha_info->digest[2], sha_info->digest[3], sha_info->digest[4]);
+   output = sha_info->digest[0] ^ sha_info->digest[1] ^ sha_info->digest[2] ^ sha_info->digest[3] ^ sha_info->digest[4];
 }
