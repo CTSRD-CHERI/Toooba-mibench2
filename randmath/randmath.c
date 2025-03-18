@@ -49,7 +49,7 @@ int main ( void )
     fprintf(fpout,"    return(x);\n");
     fprintf(fpout,"}\n");
     fprintf(fpout,"\n");
-    fprintf(fpout,"unsigned int prand;\n");
+    fprintf(fpout,"volatile unsigned int prand;\n");
     for(ra=0;ra<8;ra++) fprintf(fpout,"unsigned int %c;\n",'a'+ra);
     fprintf(fpout,"\n");
     fprintf(fpout,"unsigned int abcmath ( void )\n");

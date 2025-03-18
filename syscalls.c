@@ -19,7 +19,7 @@ _start_purecap(void) {
 }
 #endif
 
-extern volatile int tohost = 0;
+extern volatile long long tohost = 0;
 
 int main(int, char **);
 
