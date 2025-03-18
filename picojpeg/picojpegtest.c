@@ -4,6 +4,7 @@
 #include "jpegdata.h"
 
 unsigned int doff;
+volatile unsigned int sum;
 
 unsigned char pjpeg_need_bytes_callback(unsigned char* pBuf, unsigned char buf_size, unsigned char *pBytes_actually_read, void *pCallback_data)
 {
@@ -29,7 +30,6 @@ int run_test ( void )
 {
     unsigned char status;
     pjpeg_image_info_t pInfo;
-    unsigned int sum;
     unsigned int rb;
 
 
@@ -85,7 +85,7 @@ int run_test ( void )
     {
         return(1);
     }
-    printf("---- sum 0x%08X 0x%08X\n",sum,sum);
+    //printf("---- sum 0x%08X 0x%08X\n",sum,sum);
     return(sum);
 }
 

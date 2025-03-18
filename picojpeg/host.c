@@ -123,19 +123,19 @@ int main ( void )
     }
     if(status!=PJPG_NO_MORE_BLOCKS)
     {
-        printf("status %u\n",status);
+        //printf("status %u\n",status);
         return(1);
     }
-    printf("----\n");
-    printf("%d\n",pInfo.m_width);
-    printf("%d\n",pInfo.m_height);
-    printf("%d\n",pInfo.m_comps);
-    printf("%d\n",pInfo.m_MCUSPerRow);
-    printf("%d\n",pInfo.m_MCUSPerCol);
-    printf("%d\n",pInfo.m_scanType);
-    printf("%d\n",pInfo.m_MCUWidth);
-    printf("%d\n",pInfo.m_MCUHeight);
-    printf("---- sum 0x%08X %u\n",sum,sum);
+    //printf("----\n");
+    //printf("%d\n",pInfo.m_width);
+    //printf("%d\n",pInfo.m_height);
+    //printf("%d\n",pInfo.m_comps);
+    //printf("%d\n",pInfo.m_MCUSPerRow);
+    //printf("%d\n",pInfo.m_MCUSPerCol);
+    //printf("%d\n",pInfo.m_scanType);
+    //printf("%d\n",pInfo.m_MCUWidth);
+    //printf("%d\n",pInfo.m_MCUHeight);
+    //printf("---- sum 0x%08X %u\n",sum,sum);
 
 
     //fwrite(odat,1,sizeof(odat),fpout);
