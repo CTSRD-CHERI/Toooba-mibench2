@@ -29,15 +29,16 @@ int main(void)
     return 0;
 }
 
-
+volatile char output;
 
 // prints string as hex
 static void phex(uint8_t* str)
 {
     unsigned char i;
     for(i = 0; i < 16; ++i)
-        printf("%.2x", str[i]);
-    printf("\n");
+        output = str[i];
+        //printf("%.2x", str[i]);
+    //printf("\n");
 }
 
 static void test_encrypt_ecb_verbose(void)
@@ -58,26 +59,26 @@ static void test_encrypt_ecb_verbose(void)
     memset(buf2, 0, 64);
 
     // print text to encrypt, key and IV
-    printf("ECB encrypt verbose:\n\n");
-    printf("plain text:\n");
+    //printf("ECB encrypt verbose:\n\n");
+    //printf("plain text:\n");
     for(i = (uint8_t) 0; i < (uint8_t) 4; ++i)
     {
         phex(plain_text + i * (uint8_t) 16);
     }
-    printf("\n");
+    //printf("\n");
 
-    printf("key:\n");
+    //printf("key:\n");
     phex(key);
-    printf("\n");
+    //printf("\n");
 
     // print the resulting cipher as 4 x 16 byte strings
-    printf("ciphertext:\n");
+    //printf("ciphertext:\n");
     for(i = 0; i < 4; ++i)
     {
         AES128_ECB_encrypt(plain_text + (i*16), key, buf+(i*16));
         phex(buf + (i*16));
     }
-    printf("\n");
+    //printf("\n");
 }
 
 
@@ -90,7 +91,7 @@ static int test_encrypt_ecb(void)
 
   AES128_ECB_encrypt(in, key, buffer);
 
-  printf("ECB decrypt: ");
+  //printf("ECB decrypt: ");
 
   if(0 == strncmp((char*) out, (char*) buffer, 16))
   {
@@ -125,7 +126,7 @@ static int test_decrypt_cbc(void)
   AES128_CBC_decrypt_buffer(buffer+32, in+32, 16, 0, 0);
   AES128_CBC_decrypt_buffer(buffer+48, in+48, 16, 0, 0);
 
-  printf("CBC decrypt: ");
+  //printf("CBC decrypt: ");
 
   if(0 == strncmp((char*) out, (char*) buffer, 64))
   {
@@ -155,7 +156,7 @@ static int test_encrypt_cbc(void)
 
   AES128_CBC_encrypt_buffer(buffer, in, 64, key, iv);
 
-  printf("CBC encrypt: ");
+  //printf("CBC encrypt: ");
 
   if(0 == strncmp((char*) out, (char*) buffer, 64))
   {
@@ -179,7 +180,7 @@ static int test_decrypt_ecb(void)
 
   AES128_ECB_decrypt(in, key, buffer);
 
-  printf("ECB decrypt: ");
+  //printf("ECB decrypt: ");
 
   if(0 == strncmp((char*) out, (char*) buffer, 16))
   {
