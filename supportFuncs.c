@@ -1,9 +1,10 @@
 void putchar(char);
 void exit(int);
 
-//unsigned int heapCurrent = 0x40000000;
 extern unsigned int end;
-extern unsigned int heapCurrent;
+//extern unsigned int heapCurrent;
+char heap[1<<16];
+char * heapCurrent = heap;
 
 void _fini() {}
 void __exidx_start() {}
@@ -30,11 +31,26 @@ void puts(char *string)
     }
 }
 
+void * malloc(int increment)
+{
+    void * retval = (void *) heapCurrent;
+    heapCurrent += increment;
+    
+    if(heapCurrent >= (heap + (1<<16)))
+    {
+        exit(1);
+    }
+    
+    return retval;
+}
+
+void free(void * ignorned) {}
+
 void * _sbrk(int increment)
 {
     heapCurrent += increment;
     
-    if(heapCurrent >= end)
+    if(heapCurrent >= (heap + (1<<16)))
     {
         exit(1);
     }
@@ -42,6 +58,7 @@ void * _sbrk(int increment)
     return (void *)heapCurrent;
 }
 
+/*
 int rand(void)
 {
     return 7;
@@ -51,6 +68,7 @@ int srand(void)
 {
     return 11;
 }
+*/
 
 // Default behavior is for GCC to send printf output here
 int _write(int fd, const unsigned char *buf, int count)
