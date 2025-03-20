@@ -29,8 +29,8 @@
  */
 
 #include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -160,6 +160,13 @@ struct MyNode {
 	double bar;
 };
 
+volatile char er_out;
+void perror(char * erstr)
+{
+	er_out = erstr[0];
+}
+volatile int output;
+
 int
 main()
 {
@@ -267,8 +274,9 @@ main()
 		//if(pfind->p_key==(addr.s_addr&pfind->p_m->pm_mask))
 		if(pfind->p_key==addr.s_addr)
 		{
-			printf("%f %08x: ", time, addr.s_addr);
-			printf("Found.\n");
+			//printf("%f %08x: ", time, addr.s_addr);
+			//printf("Found.\n");
+			output = ((int)time) ^ addr.s_addr;
 		}
 		else
 		{
@@ -281,7 +289,8 @@ main()
 			p = pat_insert(p, phead);
 		}
 		if (!p) {
-			printf("Failed on pat_insert\n");
+			//printf("Failed on pat_insert\n");
+			output = 0;
 			return(0);
 		}
 	}
