@@ -32,8 +32,6 @@ int run_test ( void )
     pjpeg_image_info_t pInfo;
     unsigned int rb;
 
-
-
     doff=0;
 
     status = pjpeg_decode_init(&pInfo, pjpeg_need_bytes_callback,(void *)0,0);
