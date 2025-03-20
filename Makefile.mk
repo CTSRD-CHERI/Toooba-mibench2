@@ -4,9 +4,6 @@ LIBS ?=
 # Allow users to override the number of time to run a benchmark.
 RUNS ?= 1
 
-# Allow users to override the UART's baud rate.
-UART_BAUD_RATE ?= 115200
-
 ifeq ($(CHERI),1)
 TOOLCHAIN:=LLVM
 endif
@@ -71,7 +68,6 @@ CFLAGS := \
 	-DCLOCKS_PER_SEC=$(CLOCKS_PER_SEC) \
 	-DHAS_FLOAT=1 \
 	-DRUNS=$(RUNS) \
-	-DUART_BAUD_RATE=$(UART_BAUD_RATE) \
 	-O2 \
 	-Wall \
 	-static \
