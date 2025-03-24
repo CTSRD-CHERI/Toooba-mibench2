@@ -16,8 +16,8 @@
 #ifndef BITOPS__H
 #define BITOPS__H
 
-#include <stdio.h>
-#include <stdlib.h>                             /* For size_t           */
+//#include <stdio.h>
+//#include <stdlib.h>                             /* For size_t           */
 #include <limits.h>                             /* For CHAR_BIT         */
 #include "sniptype.h"                           /* For TOBOOL()         */
 #include "extkword.h"                           /* For CDECL            */
@@ -57,18 +57,18 @@ void  flipbit(char *set, int number);
 **  BITFILES.C
 */
 
-typedef struct  {
-      FILE *  file;       /* for stream I/O   */
-      char    rbuf;       /* read bit buffer  */
-      char    rcnt;       /* read bit count   */
-      char    wbuf;       /* write bit buffer */
-      char    wcnt;       /* write bit count  */
-} bfile;
+//typedef struct  {
+//      FILE *  file;       /* for stream I/O   */
+//      char    rbuf;       /* read bit buffer  */
+//      char    rcnt;       /* read bit count   */
+//      char    wbuf;       /* write bit buffer */
+//      char    wcnt;       /* write bit count  */
+//} bfile;
 
-bfile * bfopen(char *name, char *mode);
-int     bfread(bfile *bf);
-void    bfwrite(int bit, bfile *bf);
-void    bfclose(bfile *bf);
+//bfile * bfopen(char *name, char *mode);
+//int     bfread(bfile *bf);
+//void    bfwrite(int bit, bfile *bf);
+//void    bfclose(bfile *bf);
 
 /*
 ** BITSTRNG.C

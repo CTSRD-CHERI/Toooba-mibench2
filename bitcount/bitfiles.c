@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include "bitops.h"
+#include "../supportFuncs.c"
 
 bfile *bfopen(char *name, char *mode)
 {

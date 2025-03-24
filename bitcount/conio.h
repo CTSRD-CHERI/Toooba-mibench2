@@ -10,7 +10,7 @@
 #ifndef UNXCONIO__H
 #define UNXCONIO__H
 
-#include <stdio.h>
+//#include <stdio.h>
 #include <unistd.h>
 
 #define echo_on()  term_option(0)
