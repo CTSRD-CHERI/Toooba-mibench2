@@ -49,7 +49,7 @@ int main(void)
     "Shift and count bits"
   };
 
-  iterations=1125000;
+  iterations=11250;
   
   //puts("Bit counter algorithm benchmark\n");
   
