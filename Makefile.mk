@@ -8,40 +8,38 @@ ifeq ($(CHERI),1)
 TOOLCHAIN:=LLVM
 endif
 
-#CCDIR   ?= /Users/jonathanwoodruff/cheribuild/llvm-build/bin
+CCDIR   ?= /Users/jonathanwoodruff/cheri/build/llvm-project-build/bin
 ifeq ($(TOOLCHAIN),LLVM)
-CC      := CCDIR/clang
-OBJDUMP := CCDIR/llvm-objdump
-OBJCOPY := CCDIR/llvm-objcopy
-TOOLCHAIN_LINKER_FLAGS := -fuse-ld=lld
-ifeq ($(GFE_TARGET),P1)
-SYSROOT_DIR=/opt/riscv-llvm/riscv32-unknown-elf/
-else
-SYSROOT_DIR=/opt/riscv-llvm/riscv64-unknown-elf/
-endif # sysroot set
-
+CC      := $(CCDIR)/clang
+LD      := $(CCDIR)/ld.lld
+OBJDUMP := $(CCDIR)/llvm-objdump
+OBJCOPY := $(CCDIR)/llvm-objcopy
+SYSROOT_DIR=/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64/tmp/
+INCLUDE_DIR=/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64/tmp/usr/include/
+TOOLCHAIN_LINKER_FLAGS := -fuse-ld=lld --sysroot=$(SYSROOT_DIR)
 
 RISCV_FLAGS += -mcmodel=medium -mno-relax --sysroot=$(SYSROOT_DIR)
+LIBS := 
 ifndef SYSROOT_DIR
 $(error PLEASE define SYSROOT_DIR to where libc and run-time libs are installed)
 endif
 else # GCC
 CC      := riscv64-unknown-elf-gcc
+LD      := riscv64-unknown-elf-ld
 OBJDUMP := riscv64-unknown-elf-objdump
 OBJCOPY := riscv64-unknown-elf-objcopy
 RISCV_FLAGS += -mcmodel=medany
 LIBS := -lgcc
-TOOLCHAIN_LINKER_FLAGS =
+TOOLCHAIN_LINKER_FLAGS = --allow-shlib-undefined
 endif
 
 # Make sure user explicitly defines the target GFE platform.
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-  RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
+  RISCV_FLAGS += -target riscv64 -march=rv64imafdxcheri -mabi=l64pc128d
 else
   RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64
 endif
-  LIBS += -lc -lclang_rt.builtins-riscv64
 else
   RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
 endif
@@ -75,7 +73,8 @@ CFLAGS := \
 	-ffast-math \
 	-fno-common \
 	-fno-builtin-printf \
-	-I$(COMMON_DIR)
+	-I$(COMMON_DIR) \
+	-I$(INCLUDE_DIR)
 ASFLAGS := $(CFLAGS)
 LDFLAGS := \
 	-v \
@@ -103,9 +102,10 @@ all: main.elf
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 main.elf: $(OBJS) $(COMMON_C_SRCS) $(COMMON_ASM_SRCS)
-	$(CC) $(CFLAGS) $(OBJS) -o main.elf $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o main.elf -L/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64/lib/libclang_rt/profile/ -L/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64/tmp/usr/lib/ -Xlinker --sysroot=/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64//tmp/ -Xlinker --allow-shlib-undefined $(LDFLAGS)
+#	$(LD) $(OBJS) --allow-shlib-undefined -lm -lc -lclang_rt.profile-riscv64 -Bstatic -T ../test.ld -L/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64/lib/libclang_rt/profile/ -L/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64/tmp/usr/lib/ --sysroot=/Users/jonathanwoodruff/cheri/build/cheribsd-riscv64-build/Users/jonathanwoodruff/cheri/cheribsd/riscv.riscv64//tmp/ -o main.elf
 	$(OBJDUMP) --disassemble-all main.elf > main.lst
-	$(OBJCOPY) main.elf main.bin -O binary
+	$(OBJCOPY) main.elf main.bin
 
 clean: more_clean
 	rm -rf *.o *.elf output* *.lst *.bin *~

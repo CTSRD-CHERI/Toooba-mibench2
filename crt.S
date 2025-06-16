@@ -14,9 +14,12 @@
 
   .section ".text.init"
   .globl _start
+#if __CHERI__
+.option push
+.option nocapmode
+#endif
 _start:
 #if __CHERI__
-.option nocapmode
   li t6, 0x1800
   csrw mstatus, t6
   # W^X for PCC and DDC
@@ -32,7 +35,7 @@ _start:
   candperm        ct0, ct0, t1
   la              t2, zero_regs
   csetoffset      ct0, ct0, t2
-  cjr             ct0
+  jr.cap          ct0
 #endif
 
 zero_regs:
@@ -176,9 +179,10 @@ init_trap:
   csrw mtvec, t0
 
 #if __CHERI__
-  cfromptr    csp, ddc, sp # Get DDC
+  cspecialrw  ct0, ddc, cnull # Get DDC
+  cincoffset  csp, ct0, sp
   csetbounds  csp, csp, tp
-  cincoffset  csp, csp, tp
+  cincoffset  csp, csp, tp # Start stack at top
 
   # Initialise the captable.
   cspecialrw      ct0, pcc, cnull # Get PCC
@@ -186,21 +190,21 @@ init_trap:
   csetoffset      ct0, ct0, t1
   li              t1, 1
   csetflags       ct0, ct0, t1
-  cjalr           cra, ct0
+  jalr.cap        cra, ct0
+.option capmode
 
   # initialize trap vector
-  cspecialr ct0, pcc
-  li              t1, 1
-  csetflags       ct0, ct0, t1
-  la t1, trap_entry
-  csetoffset ct0, ct0, t1 # ct0 still has PCC
-  cspecialw mtcc, ct0
+  #cspecialr ct0, pcc
+  #li              t1, 1
+  #csetflags       ct0, ct0, t1
+  cllc ct1, trap_entry
+  #csetoffset ct0, ct0, t1 # ct0 still has PCC
+  cspecialw mtcc, ct1
 
-.option capmode
-  clgc ct0, _init
-  li              t1, 1
-  csetflags       ct0, ct0, t1
-  cjr  ct0
+  #cllc ct0, _init
+  #li              t1, 1
+  #csetflags       ct0, ct0, t1
+  j  _init
 .option nocapmode
 #else
   add sp, sp, tp

@@ -23,7 +23,7 @@ int main(void)
   uint64_t test_duration_cycles;
 
   t_start = get_cycle_count();
-  for(run = 0; run < RUNS; ++run)
+  for(run = 0; run < 1; ++run)
   {
     //puts("Trial\n\r");
     //printf("Run %d\n\r", run+1);
