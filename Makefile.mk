@@ -8,7 +8,7 @@ ifeq ($(CHERI),1)
 TOOLCHAIN:=LLVM
 endif
 
-CCDIR   ?= /Users/jonathanwoodruff/cheri/build/llvm-project-build/bin
+CCDIR   ?= /Users/jonathanwoodruff/cheri/zcheri/output/sdk/bin/
 ifeq ($(TOOLCHAIN),LLVM)
 CC      := $(CCDIR)/clang
 LD      := $(CCDIR)/ld.lld
@@ -29,7 +29,7 @@ endif
 # Make sure user explicitly defines the target GFE platform.
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-  RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d -menable-experimental-extensions
+  RISCV_FLAGS += -target riscv64 -march=rv64imafdcxcheri -mabi=l64pc128d
 else
   RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64d -menable-experimental-extensions
 endif

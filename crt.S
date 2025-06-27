@@ -23,19 +23,23 @@ _start:
   li t6, 0x1800
   csrw mstatus, t6
   # W^X for PCC and DDC
-  cspecialrw      ct0, ddc, cnull
-  li              t1, (1<<1)
-  not             t1, t1
-  candperm        ct0, ct0, t1
-  cspecialrw      cnull, ddc, ct0
+  //csrrw           ct0, ddc, cnull
+  //li              t1, (1<<1)
+  //not             t1, t1
+  //acperm          ct0, ct0, t1
+  //csrrw           cnull, ddc, ct0
 
-  cspecialrw      ct0, pcc, cnull
-  li              t1, ((1<<3) | (1<<5))
-  not             t1, t1
-  candperm        ct0, ct0, t1
-  la              t2, zero_regs
-  csetoffset      ct0, ct0, t2
-  jr.cap          ct0
+//  modesw.cap
+//.option capmode
+//  auipc           ct0, 0
+//  modesw.int
+//.option nocapmode
+  //li              t1, ((1<<3) | (1<<5))
+  //not             t1, t1
+  //acperm          ct0, ct0, t1
+  //la              t2, zero_regs
+  //scaddr          ct0, ct0, t2
+  //jr.cap          ct0
 #endif
 
 zero_regs:
@@ -99,13 +103,6 @@ zero_regs:
   # for now, assume only 1 core
   li a1, 1
 1:bgeu a0, a1, 1b
-
-  # give each core 128KB of stack + TLS
-#define STKSHIFT 17
-  sll a2, a0, STKSHIFT
-  add tp, tp, a2
-  add sp, a0, 1
-  sll sp, sp, STKSHIFT
 
 init_bss:
     /* init bss section */
@@ -178,52 +175,31 @@ init_trap:
   la t0, trap_entry
   csrw mtvec, t0
 
+  # give each core 128KB of stack + TLS
+#define STKSHIFT 17
+  li  a2, 1
+  sll a2, a2, STKSHIFT
 #if __CHERI__
-  cspecialrw  ct0, ddc, cnull # Get DDC
-  csetaddr    csp, ct0, sp
-  csetbounds  csp, csp, tp
-  cincoffset  csp, csp, tp # Start stack at top
-
-  # Initialise the captable.
-  cspecialrw      ct0, pcc, cnull # Get PCC
-  la              t1, capmode
-  csetaddr        ct0, ct0, t1
-  li              t1, 1
-  csetflags       ct0, ct0, t1
-  jr.cap          ct0
-capmode:
+  modesw.cap
 .option capmode
-  jal             cra, _start_purecap  # jump to target
-
-  # initialize trap vector
-  #cspecialr ct0, pcc
-  #li              t1, 1
-  #csetflags       ct0, ct0, t1
-  cllc ct1, trap_entry
-  #csetoffset ct0, ct0, t1 # ct0 still has PCC
-  cspecialw mtcc, ct1
-
-  #cllc ct0, _init
-  #li              t1, 1
-  #csetflags       ct0, ct0, t1
-  j  _init
+  csrr   csp, ddc # Get DDC
+  scaddr csp, csp, tp
+  scbndsr csp, csp, a2
+  cadd   csp, csp, a2 # Start stack at top
+  # Initialise the captable.
+  jal _start_purecap
 .option nocapmode
 #else
-  add sp, sp, tp
-  j _init
+  add sp, tp, a2
 #endif
+  j  _init
 
 # Not expected to trap handle here, but it is useful for debugging
 # No need to CHERIfym ebreak should be fine
   .align 2
 trap_entry:
 #if __CHERI__
-.option capmode
-  csrr a0, mcause
-  csrr a1, mepc
-  clgc ct0, handle_trap
-  cjr  ct0
-.option nocapmode
+//.option capmode
 #endif
   addi sp, sp, -272
 
@@ -262,6 +238,7 @@ trap_entry:
   csrr a0, mcause
   csrr a1, mepc
   mv a2, sp
+  csrr a3, mtval2
   jal handle_trap
   csrw mepc, a0
 

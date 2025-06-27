@@ -5,7 +5,7 @@
 #include <stdarg.h>
 //#include <stdio.h>
 #include <limits.h>
-#include <sys/signal.h>
+//#include <sys/signal.h>
 #include "util.h"
 
 #if __CHERI__
