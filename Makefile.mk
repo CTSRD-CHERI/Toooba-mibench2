@@ -81,8 +81,6 @@ LDFLAGS := \
 	-static \
 	-nostdlib \
 	-nostartfiles \
-	-lm \
-	-lc \
 	$(LIBS) \
 	-T $(LINKER_SCRIPT) \
 	$(TOOLCHAIN_LINKER_FLAGS)

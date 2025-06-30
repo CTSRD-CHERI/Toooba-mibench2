@@ -31,21 +31,6 @@ void puts(char *string)
     }
 }
 
-void * malloc(int increment)
-{
-    void * retval = (void *) heapCurrent;
-    heapCurrent += increment;
-    
-    if(heapCurrent >= (heap + (1<<16)))
-    {
-        exit(1);
-    }
-    
-    return retval;
-}
-
-void free(void * ignorned) {}
-
 void * _sbrk(int increment)
 {
     heapCurrent += increment;

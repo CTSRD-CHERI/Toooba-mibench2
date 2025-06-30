@@ -23,9 +23,11 @@
  */
 
 #include "../supportFuncs.c"
+#include "util.h"
 //#include <stdlib.h>	/* free(), malloc() */
-#include <string.h>	/* bcopy() */
+//#include <string.h>	/* bcopy() */
 #include "patricia.h"
+
 
 
 /*
