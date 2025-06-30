@@ -12,13 +12,12 @@
 **  10/21/93 rdg  Fixed bug found by Jeff Dunlop
 */
 
-#include <stddef.h>
-#include <string.h>
+#include <util.h>
 #include <limits.h>
 #include "../bareBench.h"
 
-static size_t table[UCHAR_MAX + 1];
-static size_t len;
+static unsigned long table[UCHAR_MAX + 1];
+static unsigned long len;
 static char *findme;
 
 /*
@@ -27,7 +26,7 @@ static char *findme;
 
 void init_search(const char *string)
 {
-      size_t i;
+      unsigned long i;
 
       len = strlen(string);
       for (i = 0; i <= UCHAR_MAX; i++)                      /* rdg 10/93 */
@@ -43,10 +42,10 @@ void init_search(const char *string)
 
 char *strsearch(const char *string)
 {
-      register size_t shift;
-      register size_t pos = len - 1;
+      register unsigned long shift;
+      register unsigned long pos = len - 1;
       char *here;
-      size_t limit=strlen(string);
+      unsigned long limit=strlen(string);
 
       while (pos < limit)
       {

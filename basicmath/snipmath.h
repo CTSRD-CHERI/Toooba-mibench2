@@ -7,7 +7,7 @@
 #ifndef SNIPMATH__H
 #define SNIPMATH__H
 
-#include <math.h>
+#include <util.h>
 #include "sniptype.h"
 #include "round.h"
 
@@ -18,10 +18,10 @@
 void    SetBCDLen(int n);                             /* Bcdl.C         */
 long    BCDtoLong(char *BCDNum);                      /* Bcdl.C         */
 void    LongtoBCD(long num, char BCDNum[]);           /* Bcdl.C         */
-double  bcd_to_double(void *buf, size_t len,          /* Bcdd.C         */
+double  bcd_to_double(void *buf, unsigned long len,          /* Bcdd.C         */
                       int digits);
 int     double_to_bcd(double arg, char *buf,          /* Bcdd.C         */
-                      size_t length, size_t digits );
+                      unsigned long length, unsigned long digits );
 DWORD   ncomb1 (int n, int m);                        /* Combin.C       */
 DWORD   ncomb2 (int n, int m);                        /* Combin.C       */
 void    SolveCubic(double a, double b, double c,      /* Cubic.C        */

@@ -6,7 +6,7 @@
 **  Public domain by Bob Stout
 */
 
-#include <string.h>
+#include <util.h>
 #include "bitops.h"
 
 unsigned int bstr_i(char *cptr)

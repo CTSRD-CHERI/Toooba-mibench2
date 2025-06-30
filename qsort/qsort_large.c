@@ -1,6 +1,6 @@
-#include <stdlib.h>
+#include <util.h>
 //#include <stdio.h>
-#include <math.h>
+//#include <math.h>
 #include "../bareBench.h"
 #include "input_large.h"
 
@@ -11,6 +11,47 @@
   int x, y, z;
   double distance;
 };*/
+
+static void swap_bytes(char *a, char *b, unsigned long size) {
+    while (size--) {
+        char tmp = *a;
+        *a++ = *b;
+        *b++ = tmp;
+    }
+}
+
+static void quicksort(char *base, unsigned long left, unsigned long right, unsigned long size,
+                      int (*compar)(const void *, const void *)) {
+    if (left >= right) return;
+
+    unsigned long pivot_index = left + (right - left) / 2;
+    char *pivot = base + pivot_index * size;
+
+    // Move pivot to end
+    swap_bytes(base + pivot_index * size, base + right * size, size);
+
+    unsigned long store_index = left;
+    for (unsigned long i = left; i < right; i++) {
+        if (compar(base + i * size, base + right * size) < 0) {
+            swap_bytes(base + i * size, base + store_index * size, size);
+            store_index++;
+        }
+    }
+
+    // Move pivot to its final place
+    swap_bytes(base + store_index * size, base + right * size, size);
+
+    if (store_index > 0)
+        quicksort(base, left, store_index - 1, size, compar);
+    quicksort(base, store_index + 1, right, size, compar);
+}
+
+void qsort(void *base, unsigned long nmemb, unsigned long size,
+           int (*compar)(const void *, const void *)) {
+    if (!base || nmemb < 2 || !compar) return;
+
+    quicksort((char *)base, 0, nmemb - 1, size, compar);
+}
 
 int compare(const void *elem1, const void *elem2)
 {

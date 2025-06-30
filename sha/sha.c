@@ -6,9 +6,7 @@
 /* NIST's proposed modification to SHA of 7/11/94 may be */
 /* activated by defining USE_MODIFIED_SHA */
 
-#include <stdlib.h>
-//#include <stdio.h>
-#include <string.h>
+#include <util.h>
 #include "sha.h"
 
 /* SHA f()-functions */

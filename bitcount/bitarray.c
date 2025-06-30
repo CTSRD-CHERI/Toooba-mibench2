@@ -6,7 +6,7 @@
 
 #include "bitops.h"
 
-char *alloc_bit_array(size_t bits)
+char *alloc_bit_array(unsigned long bits)
 {
       char *set = calloc((bits + CHAR_BIT - 1) / CHAR_BIT, sizeof(char));
 

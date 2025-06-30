@@ -72,10 +72,6 @@ static uintptr_t insn_len(uintptr_t pc)
   return (*(unsigned short*)pc & 3) ? 4 : 2;
 }
 
-#ifdef __riscv
-#include "encoding.h"
-#endif
-
 #define stringify_1(s) #s
 #define stringify(s) stringify_1(s)
 #define stats(code, iter) do { \
@@ -87,123 +83,70 @@ static uintptr_t insn_len(uintptr_t pc)
              stringify(code), _c, _c/iter, 10*_c/iter%10, _c/_i, 10*_c/_i%10); \
   } while(0)
 
-int memcmp(const void *s1, const void *s2, int n) {
-    const unsigned char *p1 = s1;
-    const unsigned char *p2 = s2;
+#define NULL 0
 
-    for (int i = 0; i < n; i++) {
-        if (p1[i] != p2[i]) {
-            return (int)(p1[i] - p2[i]);
-        }
-    }
-    return 0;
-}
+int memcmp(const void *s1, const void *s2, unsigned long n);
 
-void *memcpy(void *dest, const void *src, int n) {
-    unsigned char *d = dest;
-    const unsigned char *s = src;
+int strncmp(const char *s1, const char *s2, unsigned long n);
 
-    for (int i = 0; i < n; i++) {
-        d[i] = s[i];
-    }
+char *strchr(const char *s, int c);
 
-    return dest;
-}
+unsigned long strlen(const char *s);
 
-void *memset(void *s, int c, int n) {
-    unsigned char *p = s;
-    unsigned char value = (unsigned char)c;
+void putchar(char c);
 
-    for (int i = 0; i < n; i++) {
-        p[i] = value;
-    }
+void puts(char *string);
 
-    return s;
-}
+void *memcpy(void *dest, const void *src, unsigned long n);
 
-double modf(double x, double *iptr) {
-    if (x >= 0.0) {
-        *iptr = (double)(long long)x;
-    } else {
-        *iptr = (double)(long long)x;
-    }
+void *bcopy(void *dest, const void *src, unsigned long n);
 
-    return x - *iptr;
-}
+void *memmove(void *dest, const void *src, unsigned long n);
 
-int printf(const char *format, ...) {
-    // Stub: does nothing
-    (void)format;  // Avoid unused parameter warning
+void *memset(void *s, int c, unsigned long n);
 
-    va_list args;
-    va_start(args, format);
-    va_end(args);
+void bzero(void *s, unsigned long n);
 
-    return 0;  // Return value can be adjusted as needed
-}
+double modf(double x, double *iptr);
+
+int printf(const char *format, ...);
 
 #define HEAP_SIZE (1024 * 1024)  // 1 MB
 
 static unsigned char heap[HEAP_SIZE];
 static int heap_offset = 0;
 
-void *malloc(int size) {
-    // Align size to 16 bytes
-    size = (size + 15) & ~15;
+void *malloc(unsigned long size);
 
-    if (heap_offset + size > HEAP_SIZE) {
-        // Out of memory
-        return 0;
-    }
+void *calloc(unsigned long len, unsigned long size);
 
-    void *ptr = &heap[heap_offset];
-    heap_offset += size;
-    return ptr;
-}
+void * _sbrk(int increment);
 
-void free(void *ptr) {
-    // Stub: does nothing
-    (void)ptr; // Avoid unused parameter warning
-}
+void free(void *ptr);
+
+// math functions and constants
+#define PI 3.14159
 
 static unsigned int seed = 1;
 
-void srand(unsigned int s) {
-    seed = s;
-}
+void srand(unsigned int s);
 
-int rand(void) {
-    // Constants from Numerical Recipes
-    seed = seed * 1664525 + 1013904223;
-    return (int)(seed & 0x7FFFFFFF);  // Return non-negative result
-}
+int rand(void);
 
-static double power(double x, int n) {
-    double result = 1.0;
-    for (int i = 0; i < n; i++) {
-        result *= x;
-    }
-    return result;
-}
+double fabs(double x);
 
-double sin(double x) {
-    // Taylor series approximation around 0:
-    // sin(x) ≈ x - x^3/3! + x^5/5! - x^7/7!
-    double x3 = power(x, 3);
-    double x5 = power(x, 5);
-    double x7 = power(x, 7);
+static double pow(double x, double n);
 
-    return x - x3 / 6.0 + x5 / 120.0 - x7 / 5040.0;
-}
+double sqrt(double x);
 
-double cos(double x) {
-    // Taylor series approximation around 0:
-    // cos(x) ≈ 1 - x^2/2! + x^4/4! - x^6/6!
-    double x2 = power(x, 2);
-    double x4 = power(x, 4);
-    double x6 = power(x, 6);
+double sin(double x);
 
-    return 1.0 - x2 / 2.0 + x4 / 24.0 - x6 / 720.0;
-}
+double cos(double x);
+
+double atan(double z);
+
+double atan2(double y, double x);
+
+double acos(double x);
 
 #endif //__UTIL_H

@@ -17,7 +17,7 @@
 #define BITOPS__H
 
 //#include <stdio.h>
-//#include <stdlib.h>                             /* For size_t           */
+//#include <stdlib.h>                             /* For unsigned long           */
 #include <limits.h>                             /* For CHAR_BIT         */
 #include "sniptype.h"                           /* For TOBOOL()         */
 #include "extkword.h"                           /* For CDECL            */
@@ -48,7 +48,7 @@
 **  BITARRAY.C
 */
 
-char *alloc_bit_array(size_t bits);
+char *alloc_bit_array(unsigned long bits);
 int   getbit(char *set, int number);
 void  setbit(char *set, int number, int value);
 void  flipbit(char *set, int number);

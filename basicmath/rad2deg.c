@@ -4,7 +4,6 @@
 **  RAD2DEG.C - Functions to convert between radians and degrees
 */
 
-#include <math.h>
 #include "snipmath.h"
 
 #undef rad2deg                /* These are macros defined in PI.H */

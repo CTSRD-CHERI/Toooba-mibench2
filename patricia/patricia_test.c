@@ -28,20 +28,21 @@
  * $Id: patricia_test.c,v 1.1.1.1 2000/11/06 19:53:17 mguthaus Exp $
  */
 
-#include <stdarg.h>
+//#include <stdarg.h>
 //#include <stdio.h>
 //#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include <util.h>
 
-#include <errno.h>
-#include <fcntl.h>
-#include <unistd.h>
+//#include <assert.h>
+
+//#include <errno.h>
+//#include <fcntl.h>
+//#include <unistd.h>
 
 //#include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+//#include <sys/time.h>
+//#include <sys/types.h>
+//#include <sys/wait.h>
 
 //#include <rpc/rpc.h>
 //#include <netinet/in.h>
@@ -50,13 +51,37 @@
 #include "patricia.h"
 #include "../bareBench.h"
 #include "input.h"
-#include <ctype.h>
+//#include <ctype.h>
 
 struct in_addr {
     unsigned long s_addr;  // load with inet_aton()
 };
 
 int isascii_patricia(char c) { return 1;}
+
+int isdigit(int c) {
+    return (c >= '0' && c <= '9');
+}
+
+int isxdigit(int c) {
+    return (isdigit(c) ||
+            (c >= 'a' && c <= 'f') ||
+            (c >= 'A' && c <= 'F'));
+}
+
+int islower(int c) {
+    return (c >= 'a' && c <= 'z');
+}
+
+int isspace(int c) {
+    // Standard whitespace characters in C
+    return (c == ' '  ||  // space
+            c == '\f' ||  // form feed
+            c == '\n' ||  // newline
+            c == '\r' ||  // carriage return
+            c == '\t' ||  // horizontal tab
+            c == '\v');   // vertical tab
+}
 
 unsigned int htonl_patricia(unsigned int x)
 {

@@ -25,12 +25,9 @@
  */
 
 #include "../bareBench.h"
-#include <math.h>
+// #include <math.h>
 // #include <signal.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdlib.h>
+#include <util.h>
 #include "rsa.h"
 
 /*

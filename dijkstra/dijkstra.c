@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <util.h>
 #include "../bareBench.h"
 #include "input.h"
 

@@ -1,10 +1,8 @@
-void putchar(char);
+#include <util.h>
+
 void exit(int);
 
 extern unsigned int end;
-//extern unsigned int heapCurrent;
-char heap[1<<16];
-char * heapCurrent = heap;
 
 void _fini() {}
 void __exidx_start() {}
@@ -20,40 +18,6 @@ int _fstat()
 {
   return 0;
 }
-
-void puts(char *string)
-{
-    int index = 0;
-    while(string[index] != '\0')
-    {
-        putchar(string[index]);
-        ++index;
-    }
-}
-
-void * _sbrk(int increment)
-{
-    heapCurrent += increment;
-    
-    if(heapCurrent >= (heap + (1<<16)))
-    {
-        exit(1);
-    }
-    
-    return (void *)heapCurrent;
-}
-
-/*
-int rand(void)
-{
-    return 7;
-}
-
-int srand(void)
-{
-    return 11;
-}
-*/
 
 // Default behavior is for GCC to send printf output here
 int _write(int fd, const unsigned char *buf, int count)

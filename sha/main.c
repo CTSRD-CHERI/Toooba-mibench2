@@ -1,9 +1,6 @@
 /* NIST Secure Hash Algorithm */
 
-#include <stdlib.h>
-//#include <stdio.h>
-#include <string.h>
-#include <time.h>
+#include <util.h>
 #include "../bareBench.h"
 #include "sha.h"
 #include "input.h"

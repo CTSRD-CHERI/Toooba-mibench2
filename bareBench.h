@@ -6,6 +6,7 @@
 int benchmark();
 
 extern void _exit(int);
+extern void exit(int);
 
 #ifndef RUNS
 #define RUNS 1
