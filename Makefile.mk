@@ -73,6 +73,7 @@ LDFLAGS := \
 	-v \
 	-static \
 	-nostdlib \
+	-nodefaultlibs \
 	-nostartfiles \
 	$(LIBS) \
 	-T $(LINKER_SCRIPT)

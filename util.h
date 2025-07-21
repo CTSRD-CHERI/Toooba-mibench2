@@ -149,4 +149,25 @@ double atan2(double y, double x);
 
 double acos(double x);
 
+double cbrt(double x);
+
+typedef struct {
+    double low;
+    double high;
+} fake_float128;
+
+fake_float128 __extenddftf2(double a);
+
+double __trunctfdf2(fake_float128 a);
+
+fake_float128 __multf3(fake_float128 a, fake_float128 b);
+
+fake_float128 __addtf3(fake_float128 a, fake_float128 b);
+
+fake_float128 __subtf3(fake_float128 a, fake_float128 b);
+
+fake_float128 __divtf3(fake_float128 a, fake_float128 b);
+
+int __lttf2(fake_float128 a, fake_float128 b);
+
 #endif //__UTIL_H

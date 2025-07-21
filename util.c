@@ -264,3 +264,61 @@ double acos(double x) {
     double sqrt_term = sqrt(1.0 - x * x);
     return atan2(sqrt_term, x);
 }
+
+double cbrt(double x) {
+    if (x == 0.0) return 0.0;
+
+    // Handle negative numbers
+    int neg = x < 0;
+    if (neg) x = -x;
+
+    // Initial guess using rough power approximation
+    double guess = x;
+    if (x > 1.0)
+        guess = x / 3.0;
+    else
+        guess = x * 3.0;
+
+    // Newton-Raphson iteration: y_{n+1} = (2*y_n + x / y_n^2) / 3
+    for (int i = 0; i < 20; i++) {
+        guess = (2.0 * guess + x / (guess * guess)) / 3.0;
+    }
+
+    return neg ? -guess : guess;
+}
+
+fake_float128 __extenddftf2(double a) {
+    // Dummy stub — will not produce valid quad precision!
+    fake_float128 result = {0, a};
+    return result;
+}
+
+double __trunctfdf2(fake_float128 a) {
+    return a.low;
+}
+
+fake_float128 __multf3(fake_float128 a, fake_float128 b) {
+    fake_float128 result = {0, a.low * b.low};  // Not a real product!
+    return result;
+}
+
+fake_float128 __addtf3(fake_float128 a, fake_float128 b) {
+    fake_float128 result = {0, a.low + b.low};  // Dummy placeholder
+    return result;
+}
+
+fake_float128 __subtf3(fake_float128 a, fake_float128 b) {
+    fake_float128 result = {0, a.low - b.low};  // Dummy placeholder
+    return result;
+}
+
+fake_float128 __divtf3(fake_float128 a, fake_float128 b) {
+    fake_float128 result = {0, a.low / b.low};  // Dummy placeholder
+    return result;
+}
+
+int __lttf2(fake_float128 a, fake_float128 b) {
+    if (a.low < b.low) return -1;
+    if (a.low > b.low) return 1;
+    return 0;
+}
