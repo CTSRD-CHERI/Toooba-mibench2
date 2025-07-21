@@ -135,7 +135,7 @@ int rand(void);
 
 double fabs(double x);
 
-static double pow(double x, double n);
+double pow(double x, double n);
 
 double sqrt(double x);
 

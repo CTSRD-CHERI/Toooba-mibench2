@@ -180,7 +180,7 @@ double fabs(double x) {
     return x < 0 ? -x : x;
 }
 
-static double pow(double x, double n) {
+double pow(double x, double n) {
     double result = 1.0;
     for (int i = 0; i < n; i++) {
         result *= x;
