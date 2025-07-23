@@ -180,18 +180,20 @@ init_trap:
 
 #if __CHERI__
   cspecialrw  ct0, ddc, cnull # Get DDC
-  cincoffset  csp, ct0, sp
+  csetaddr    csp, ct0, sp
   csetbounds  csp, csp, tp
   cincoffset  csp, csp, tp # Start stack at top
 
   # Initialise the captable.
   cspecialrw      ct0, pcc, cnull # Get PCC
-  la              t1, _start_purecap
-  csetoffset      ct0, ct0, t1
+  la              t1, capmode
+  csetaddr        ct0, ct0, t1
   li              t1, 1
   csetflags       ct0, ct0, t1
-  jalr.cap        cra, ct0
+  jr.cap          ct0
+capmode:
 .option capmode
+  jal             cra, _start_purecap  # jump to target
 
   # initialize trap vector
   #cspecialr ct0, pcc
