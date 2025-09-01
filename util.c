@@ -287,6 +287,22 @@ double cbrt(double x) {
     return neg ? -guess : guess;
 }
 
+double floor(double x) {
+    int i = (int)x;  // truncate towards zero
+    if (x >= 0 || x == (double)i)
+        return (double)i;
+    else
+        return (double)(i - 1);
+}
+
+double ceil(double x) {
+    int i = (int)x;  // truncate towards zero
+    if (x <= 0 || x == (double)i)
+        return (double)i;
+    else
+        return (double)(i + 1);
+}
+
 fake_float128 __extenddftf2(double a) {
     // Dummy stub — will not produce valid quad precision!
     fake_float128 result = {0, a};

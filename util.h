@@ -151,6 +151,10 @@ double acos(double x);
 
 double cbrt(double x);
 
+double floor(double x);
+
+double ceil(double x);
+
 typedef struct {
     double low;
     double high;
