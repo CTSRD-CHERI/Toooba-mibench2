@@ -155,6 +155,8 @@ double floor(double x);
 
 double ceil(double x);
 
+double ldexp(double x, int exp);
+
 typedef struct {
     double low;
     double high;

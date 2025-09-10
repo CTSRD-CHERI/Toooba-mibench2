@@ -137,9 +137,9 @@ int printf(const char *format, ...) {
     return 0;  // Return value can be adjusted as needed
 }
 
-void *malloc(unsigned long size) {
+void *malloc(unsigned long size_in) {
     // Align size to 16 bytes
-    size = (size + 15) & ~15;
+    unsigned long size = (size_in + 15) & ~15;
 
     if (heap_offset + size > HEAP_SIZE) {
         // Out of memory
@@ -148,7 +148,11 @@ void *malloc(unsigned long size) {
 
     void *ptr = &heap[heap_offset];
     heap_offset += size;
+#ifdef __CHERI__
+    return __builtin_cheri_bounds_set(ptr, size_in);
+#else
     return ptr;
+#endif
 }
 
 void *calloc(unsigned long len, unsigned long size) {
@@ -301,6 +305,19 @@ double ceil(double x) {
         return (double)i;
     else
         return (double)(i + 1);
+}
+
+double ldexp(double x, int exp) {
+    if (exp > 0) {
+        while (exp-- > 0) {
+            x *= 2.0;
+        }
+    } else {
+        while (exp++ < 0) {
+            x *= 0.5;
+        }
+    }
+    return x;
 }
 
 fake_float128 __extenddftf2(double a) {
