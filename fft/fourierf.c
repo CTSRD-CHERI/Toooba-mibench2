@@ -17,9 +17,10 @@
 
 ============================================================================*/
 
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+//#include <math.h>
+#include <util.h>
 
 #include "fourier.h"
 #include "ddcmath.h"

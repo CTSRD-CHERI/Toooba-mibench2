@@ -66,8 +66,8 @@ void usqrt(unsigned long x, struct int_sqrt *q)
 
 #ifdef TEST
 
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 
 main(void)
 {

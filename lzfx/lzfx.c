@@ -32,8 +32,9 @@
 */
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdlib.h>
+//#include <string.h>
+#include <util.h>
 
 #include "../bareBench.h"
 #include "twain.h"

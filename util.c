@@ -6,8 +6,6 @@
 
 static unsigned char heap[HEAP_SIZE];
 static int heap_offset = 0;
-// math functions and constants
-#define PI 3.14159
 
 static unsigned int seed = 1;
 
@@ -182,7 +180,7 @@ void *memmove(void *dest, const void *src, unsigned long n) {
 void *memset(void *ptr, int value, unsigned long num)
 {
     unsigned char *p = ptr;
-    //unsigned char v = (unsigned char)value;
+    unsigned char v = (unsigned char)value;
 
     for (unsigned long i = 0; i < num; ++i)
         p[i] = value;

@@ -297,10 +297,11 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 
 /* ********** Leave the rest - but you may need to remove one or both of sys/file.h and malloc.h lines */
 
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
+//#include <math.h>
+#include "../util.h"
 #include "../bareBench.h"
 #include "input_small.h"
 
@@ -339,8 +340,8 @@ int getint()
   {
     if (c=='#')    /* if we're at a comment, read to end of line */
         while(c!= '\n') c=fgetc2();
-    if (c==EOF)
-      exit_error("Image %s not binary PGM.\n","is");
+    //if (c==EOF)
+    //  exit_error("Image %s not binary PGM.\n","is");
     if (c>='0' && c<='9')
       break;   /* found what we were looking for */
     c = fgetc2();
@@ -351,7 +352,7 @@ int getint()
   while (1) {
     i = (i*10) + (c - '0');
     c = fgetc2();
-    if (c==EOF) return (i);
+    //if (c==EOF) return (i);
     if (c<'0' || c>'9') break;
   }
 

@@ -46,7 +46,7 @@ void bitstring(char *str, long byze, int biz, int strwid)
 
 #ifdef TEST
 
-#include <stdlib.h>
+//#include <stdlib.h>
 
 int main(void)
 {

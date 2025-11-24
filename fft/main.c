@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+//#include <stdlib.h>
+//#include <math.h>
+#include <util.h>
 #include "fourier.h"
 #include "../bareBench.h"
 

@@ -24,7 +24,7 @@ unsigned int bstr_i(char *cptr)
 
 #ifdef TEST
 
-#include <stdlib.h>
+//#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {

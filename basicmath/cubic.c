@@ -5,7 +5,7 @@
 **  public domain by Ross Cottrell
 */
 
-#include <util.h>
+#include "../util.h"
 
 void SolveCubic(double  a,
                 double  b,

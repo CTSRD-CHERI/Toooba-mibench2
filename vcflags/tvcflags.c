@@ -1,8 +1,9 @@
 
 #include "../bareBench.h"
 #include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <string.h>
+#include "../util.h"
 
 void PUT32 ( unsigned int, unsigned int );
 

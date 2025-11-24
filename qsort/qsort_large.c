@@ -1,5 +1,5 @@
-#include <util.h>
-//#include <stdio.h>
+#include "../util.h"
+#include <stdio.h>
 //#include <math.h>
 #include "../bareBench.h"
 #include "input_large.h"

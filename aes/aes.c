@@ -33,7 +33,6 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 /*****************************************************************************/
 /* Includes:                                                                 */
 /*****************************************************************************/
-//#include <util.h>
 #include "aes.h"
 #include "util.h"
 

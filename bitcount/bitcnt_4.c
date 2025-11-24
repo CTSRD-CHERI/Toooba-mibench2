@@ -60,7 +60,7 @@ int CDECL btbl_bitcnt(long x)
 
 #ifdef TEST
 
-#include <stdlib.h>
+//#include <stdlib.h>
 #include "snip_str.h"               /* For plural_text() macro    */
 
 main(int argc, char *argv[])

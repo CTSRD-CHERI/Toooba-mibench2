@@ -14,10 +14,11 @@
 **  10/21/93 rdg  Fixed bugs found by Jeff Dunlop
 */
 
-#include <limits.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+//#include <limits.h>
+//#include <stdlib.h>
+//#include <string.h>
+//#include <ctype.h>
+#include <util.h>
 typedef unsigned char uchar;
 
 void bmhi_init(const char *);

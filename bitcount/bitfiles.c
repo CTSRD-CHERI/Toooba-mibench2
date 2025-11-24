@@ -6,7 +6,7 @@
 **  Public domain by Aare Tali
 */
 
-#include <stdlib.h>
+//#include <stdlib.h>
 #include "bitops.h"
 #include "../supportFuncs.c"
 

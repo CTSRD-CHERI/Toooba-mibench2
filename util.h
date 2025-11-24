@@ -66,6 +66,9 @@ void * _sbrk(int increment);
 
 void free(void *ptr);
 
+// math functions and constants
+#define PI 3.14159
+
 void srand(unsigned int s);
 
 int rand(void);
