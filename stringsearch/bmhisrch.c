@@ -18,8 +18,9 @@
 //#include <stdlib.h>
 //#include <string.h>
 //#include <ctype.h>
-#include <util.h>
+#include "../util.h"
 typedef unsigned char uchar;
+#define UCHAR_MAX 255
 
 void bmhi_init(const char *);
 char *bmhi_search(const char *, const int);
@@ -50,7 +51,7 @@ void bmhi_init(const char *pattern)
       pat = realloc ((void*)pat, patlen);
       if (!pat)
             exit(1);
-      else  atexit(bhmi_cleanup);
+      //else  atexit(bhmi_cleanup);
       for (i=0; i < patlen; i++)
             pat[i] = toupper(pattern[i]);
 

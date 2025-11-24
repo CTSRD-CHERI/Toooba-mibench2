@@ -10,11 +10,13 @@
 **
 **  10/21/93 rdg  Fixed bug found by Jeff Dunlop
 */
-#include <limits.h>                                         /* rdg 10/93 */
-#include <stddef.h>
-#include <string.h>
-typedef unsigned char uchar;
+//#include <limits.h>                                         /* rdg 10/93 */
+//#include <stddef.h>
+//#include <string.h>
+#include "../util.h"
 
+typedef unsigned char uchar;
+#define UCHAR_MAX 255
 #define LOWER_ACCENTED_CHARS
 
 unsigned char lowervec[UCHAR_MAX+1] = {                     /* rdg 10/93 */

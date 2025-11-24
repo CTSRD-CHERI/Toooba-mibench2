@@ -125,6 +125,20 @@ char *strchr(const char *s, int c) {
     return 0;  // Character not found
 }
 
+int tolower(int c)
+{
+    if (c >= 'A' && c <= 'Z')
+        return c + ('a' - 'A');
+    return c;
+}
+
+int toupper(int c)
+{
+    if (c >= 'a' && c <= 'z')
+        return c - ('a' - 'A');
+    return c;
+}
+
 volatile char out_char;
 int putchar(int c) {
     out_char = (char)c;
@@ -183,7 +197,7 @@ void *memset(void *ptr, int value, unsigned long num)
     unsigned char v = (unsigned char)value;
 
     for (unsigned long i = 0; i < num; ++i)
-        p[i] = value;
+        p[i] = v;
 
     return ptr;
 }
@@ -230,6 +244,10 @@ void *malloc(unsigned long size_in) {
 void *calloc(unsigned long len, unsigned long size) {
     unsigned long blen = len * size;
     return memset(malloc(blen),0,blen);
+}
+
+void *realloc(void *ptr, unsigned long size) {
+    return memcpy(malloc(size), ptr, size); // This one does a buffer overrun... How do we know the old size? Maybe use CHERI length?
 }
 
 void * _sbrk(int increment)
@@ -433,11 +451,7 @@ int fprintf(FILE *stream, const char *format, ...)
     // Suppress unused parameter warnings
     (void)stream;
     (void)format;
-/*
-    va_list args;
-    va_start(args, format);
-    va_end(args);
-*/
+
     // Do nothing and report success
     return 0;
 }
@@ -449,5 +463,20 @@ FILE *fopen(const char *pathname, const char *mode)
 
     // No-op: always fail to open
     return NULL;
+}
+
+unsigned long fread(void *ptr, unsigned long size, unsigned long nmemb, FILE *stream)
+{
+    (void)ptr;
+    (void)size;
+    (void)nmemb;
+    (void)stream;
+    return 0;
+}
+
+int fclose(FILE *stream)
+{
+    (void)stream;
+    return 0;
 }
 

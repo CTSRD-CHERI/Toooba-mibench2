@@ -40,6 +40,10 @@ char *strchr(const char *s, int c);
 
 unsigned long strlen(const char *s);
 
+int tolower(int c);
+
+int toupper(int c);
+
 int putchar(int c);
 
 int puts(const char *string);
@@ -61,6 +65,8 @@ int printf(const char *format, ...);
 void *malloc(unsigned long size);
 
 void *calloc(unsigned long len, unsigned long size);
+
+void *realloc(void *ptr, unsigned long size);
 
 void * _sbrk(int increment);
 
@@ -121,5 +127,9 @@ typedef struct _FILE FILE;
 int fprintf(FILE *stream, const char *format, ...);
 
 FILE *fopen(const char *pathname, const char *mode);
+
+unsigned long fread(void *ptr, unsigned long size, unsigned long nmemb, FILE *stream);
+
+int fclose(FILE *stream);
 
 #endif //__UTIL_H
