@@ -1,9 +1,9 @@
 // See LICENSE for license details.
 
 #include <stdint.h>
-#include <string.h>
+//#include <string.h>
 #include <stdarg.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <limits.h>
 #include <sys/signal.h>
 #include "util.h"
@@ -19,7 +19,7 @@ _start_purecap(void) {
 }
 #endif
 
-extern volatile long long tohost = 0;
+volatile long long tohost;
 
 int main(int, char **);
 

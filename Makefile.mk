@@ -23,7 +23,7 @@ LD      := riscv64-unknown-elf-ld
 OBJDUMP := riscv64-unknown-elf-objdump
 OBJCOPY := riscv64-unknown-elf-objcopy
 RISCV_FLAGS += -mcmodel=medany
-LIBS := -lgcc
+LIBS :=
 endif
 
 # Make sure user explicitly defines the target GFE platform.

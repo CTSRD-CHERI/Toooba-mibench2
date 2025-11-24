@@ -2,6 +2,78 @@
 
 #include "util.h"
 
+#define HEAP_SIZE (1024 * 1024)  // 1 MB
+
+static unsigned char heap[HEAP_SIZE];
+static int heap_offset = 0;
+// math functions and constants
+#define PI 3.14159
+
+static unsigned int seed = 1;
+
+int verify(int n, const volatile int* test, const int* verify)
+{
+  int i;
+  // Unrolled for faster verification
+  for (i = 0; i < n/2*2; i+=2)
+  {
+    int t0 = test[i], t1 = test[i+1];
+    int v0 = verify[i], v1 = verify[i+1];
+    if (t0 != v0) return i+1;
+    if (t1 != v1) return i+2;
+  }
+  if (n % 2 != 0 && test[n-1] != verify[n-1])
+    return n;
+  return 0;
+}
+
+int verifyDouble(int n, const volatile double* test, const double* verify)
+{
+  int i;
+  // Unrolled for faster verification
+  for (i = 0; i < n/2*2; i+=2)
+  {
+    double t0 = test[i], t1 = test[i+1];
+    double v0 = verify[i], v1 = verify[i+1];
+    int eq1 = t0 == v0, eq2 = t1 == v1;
+    if (!(eq1 & eq2)) return i+1+eq1;
+  }
+  if (n % 2 != 0 && test[n-1] != verify[n-1])
+    return n;
+  return 0;
+}
+
+void __attribute__((noinline)) barrier(int ncores)
+{
+  static volatile int sense;
+  static volatile int count;
+  static __thread int threadsense;
+
+  __sync_synchronize();
+
+  threadsense = !threadsense;
+  if (__sync_fetch_and_add(&count, 1) == ncores-1)
+  {
+    count = 0;
+    sense = threadsense;
+  }
+  else while(sense != threadsense)
+    ;
+
+  __sync_synchronize();
+}
+
+uint64_t lfsr(uint64_t x)
+{
+  uint64_t bit = (x ^ (x >> 1)) & 1;
+  return (x >> 1) | (bit << 62);
+}
+
+uintptr_t insn_len(uintptr_t pc)
+{
+  return (*(unsigned short*)pc & 3) ? 4 : 2;
+}
+
 int memcmp(const void *s1, const void *s2, unsigned long n) {
     const unsigned char *p1 = s1;
     const unsigned char *p2 = s2;
@@ -56,11 +128,12 @@ char *strchr(const char *s, int c) {
 }
 
 volatile char out_char;
-void putchar(char c) {
-    out_char = c;
+int putchar(int c) {
+    out_char = (char)c;
+    return 0;
 };
 
-void puts(char *string)
+int puts(const char *string)
 {
     int index = 0;
     while(string[index] != '\0')
@@ -68,6 +141,7 @@ void puts(char *string)
         putchar(string[index]);
         ++index;
     }
+    return 0;
 }
 
 void *memcpy(void *dest, const void *src, unsigned long n) {
@@ -81,8 +155,8 @@ void *memcpy(void *dest, const void *src, unsigned long n) {
     return dest;
 }
 
-void *bcopy(void *dest, const void *src, unsigned long n) {
-  return memcpy(dest, src, n);
+void bcopy(const void *src, void *dest, long unsigned int n) {
+  memcpy(dest, src, n);
 }
 
 void *memmove(void *dest, const void *src, unsigned long n) {

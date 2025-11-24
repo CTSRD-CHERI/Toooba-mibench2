@@ -9,68 +9,15 @@ extern void setStats(int enable);
 
 #define static_assert(cond) switch(0) { case 0: case !!(long)(cond): ; }
 
-static int verify(int n, const volatile int* test, const int* verify)
-{
-  int i;
-  // Unrolled for faster verification
-  for (i = 0; i < n/2*2; i+=2)
-  {
-    int t0 = test[i], t1 = test[i+1];
-    int v0 = verify[i], v1 = verify[i+1];
-    if (t0 != v0) return i+1;
-    if (t1 != v1) return i+2;
-  }
-  if (n % 2 != 0 && test[n-1] != verify[n-1])
-    return n;
-  return 0;
-}
+int verify(int n, const volatile int* test, const int* verify);
 
-static int verifyDouble(int n, const volatile double* test, const double* verify)
-{
-  int i;
-  // Unrolled for faster verification
-  for (i = 0; i < n/2*2; i+=2)
-  {
-    double t0 = test[i], t1 = test[i+1];
-    double v0 = verify[i], v1 = verify[i+1];
-    int eq1 = t0 == v0, eq2 = t1 == v1;
-    if (!(eq1 & eq2)) return i+1+eq1;
-  }
-  if (n % 2 != 0 && test[n-1] != verify[n-1])
-    return n;
-  return 0;
-}
+int verifyDouble(int n, const volatile double* test, const double* verify);
 
-static void __attribute__((noinline)) barrier(int ncores)
-{
-  static volatile int sense;
-  static volatile int count;
-  static __thread int threadsense;
+void __attribute__((noinline)) barrier(int ncores);
 
-  __sync_synchronize();
+uint64_t lfsr(uint64_t x);
 
-  threadsense = !threadsense;
-  if (__sync_fetch_and_add(&count, 1) == ncores-1)
-  {
-    count = 0;
-    sense = threadsense;
-  }
-  else while(sense != threadsense)
-    ;
-
-  __sync_synchronize();
-}
-
-static uint64_t lfsr(uint64_t x)
-{
-  uint64_t bit = (x ^ (x >> 1)) & 1;
-  return (x >> 1) | (bit << 62);
-}
-
-static uintptr_t insn_len(uintptr_t pc)
-{
-  return (*(unsigned short*)pc & 3) ? 4 : 2;
-}
+uintptr_t insn_len(uintptr_t pc);
 
 #define stringify_1(s) #s
 #define stringify(s) stringify_1(s)
@@ -93,13 +40,13 @@ char *strchr(const char *s, int c);
 
 unsigned long strlen(const char *s);
 
-void putchar(char c);
+int putchar(int c);
 
-void puts(char *string);
+int puts(const char *string);
 
 void *memcpy(void *dest, const void *src, unsigned long n);
 
-void *bcopy(void *dest, const void *src, unsigned long n);
+void bcopy(const void *src, void *dest, long unsigned int n);
 
 void *memmove(void *dest, const void *src, unsigned long n);
 
@@ -111,11 +58,6 @@ double modf(double x, double *iptr);
 
 int printf(const char *format, ...);
 
-#define HEAP_SIZE (1024 * 1024)  // 1 MB
-
-static unsigned char heap[HEAP_SIZE];
-static int heap_offset = 0;
-
 void *malloc(unsigned long size);
 
 void *calloc(unsigned long len, unsigned long size);
@@ -123,11 +65,6 @@ void *calloc(unsigned long len, unsigned long size);
 void * _sbrk(int increment);
 
 void free(void *ptr);
-
-// math functions and constants
-#define PI 3.14159
-
-static unsigned int seed = 1;
 
 void srand(unsigned int s);
 
