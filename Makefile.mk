@@ -66,6 +66,7 @@ CFLAGS := \
 	-std=gnu99 \
 	-ffast-math \
 	-fno-common \
+	-fno-builtin \
 	-fno-builtin-printf \
 	-I$(COMMON_DIR)
 ASFLAGS := $(CFLAGS)

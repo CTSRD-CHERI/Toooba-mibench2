@@ -50,7 +50,7 @@ void bcopy(const void *src, void *dest, long unsigned int n);
 
 void *memmove(void *dest, const void *src, unsigned long n);
 
-void *memset(void *s, int c, unsigned long n);
+void *memset(void *ptr, int value, unsigned long num);
 
 void bzero(void *s, unsigned long n);
 
@@ -112,5 +112,11 @@ fake_float128 __subtf3(fake_float128 a, fake_float128 b);
 fake_float128 __divtf3(fake_float128 a, fake_float128 b);
 
 int __lttf2(fake_float128 a, fake_float128 b);
+
+typedef struct _FILE FILE;
+
+int fprintf(FILE *stream, const char *format, ...);
+
+FILE *fopen(const char *pathname, const char *mode);
 
 #endif //__UTIL_H

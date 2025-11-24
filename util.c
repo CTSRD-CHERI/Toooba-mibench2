@@ -179,15 +179,15 @@ void *memmove(void *dest, const void *src, unsigned long n) {
     }
 }
 
-void *memset(void *s, int c, unsigned long n) {
-    unsigned char *p = s;
-    unsigned char value = (unsigned char)c;
+void *memset(void *ptr, int value, unsigned long num)
+{
+    unsigned char *p = ptr;
+    //unsigned char v = (unsigned char)value;
 
-    for (unsigned long i = 0; i < n; i++) {
+    for (unsigned long i = 0; i < num; ++i)
         p[i] = value;
-    }
 
-    return s;
+    return ptr;
 }
 
 void bzero(void *s, unsigned long n) {
@@ -429,3 +429,27 @@ int __lttf2(fake_float128 a, fake_float128 b) {
     if (a.low > b.low) return 1;
     return 0;
 }
+
+int fprintf(FILE *stream, const char *format, ...)
+{
+    // Suppress unused parameter warnings
+    (void)stream;
+    (void)format;
+/*
+    va_list args;
+    va_start(args, format);
+    va_end(args);
+*/
+    // Do nothing and report success
+    return 0;
+}
+
+FILE *fopen(const char *pathname, const char *mode)
+{
+    (void)pathname;
+    (void)mode;
+
+    // No-op: always fail to open
+    return NULL;
+}
+
