@@ -220,7 +220,7 @@ int printf(const char *format, ...) {
     // Stub: does nothing
     (void)format;  // Avoid unused parameter warning
 
-    return 0;  // Return value can be adjusted as needed
+    return 0;
 }
 
 void *malloc(unsigned long size_in) {

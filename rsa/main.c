@@ -671,6 +671,6 @@ int main (void) {
     for(cnt = 0; cnt < KEYLEN; ++cnt)
       printf("0x%08X\n\r", ciphertext[cnt]);
 
-    return 11;
+    return 0;
 }
 
