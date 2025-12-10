@@ -29,9 +29,9 @@ endif
 # Make sure user explicitly defines the target GFE platform.
 ifeq ($(TOOLCHAIN),LLVM)
 ifeq ($(CHERI),1)
-  RISCV_FLAGS += -target riscv64 -march=rv64imafdxcheri -mabi=l64pc128d
+  RISCV_FLAGS += -target riscv64 -march=rv64imafcdxcheri -mabi=l64pc128d
 else
-  RISCV_FLAGS += -target riscv64 -march=rv64imafdc -mabi=lp64
+  RISCV_FLAGS += -target riscv64-unknown-elf -march=rv64imafdc -mabi=lp64d
 endif
 else
   RISCV_FLAGS += -march=rv64imafdc -mabi=lp64d
