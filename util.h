@@ -44,6 +44,8 @@ int tolower(int c);
 
 int toupper(int c);
 
+char *itoa(int value, char *str, int base);
+
 int putchar(int c);
 
 int puts(const char *string);

@@ -139,11 +139,63 @@ int toupper(int c)
     return c;
 }
 
+char *itoa(int value, char *str, int base) {
+    if (base < 2 || base > 36) {
+        str[0] = '\0';
+        return str;
+    }
+
+    char *ptr = str;
+    char *ptr1 = str;
+    char tmp_char;
+    int tmp_value;
+
+    // Handle negative numbers for base 10
+    int is_negative = 0;
+    if (value < 0 && base == 10) {
+        is_negative = 1;
+        // Handle INT_MIN safely
+        tmp_value = -(value + 1);
+    } else {
+        tmp_value = value;
+    }
+
+    // Convert number to string (in reverse order)
+    do {
+        int remainder = tmp_value % base;
+        if (remainder < 0)
+            remainder = -remainder;
+
+        *ptr++ = (remainder < 10) 
+            ? remainder + '0' 
+            : remainder - 10 + 'A';
+
+        tmp_value /= base;
+    } while (tmp_value);
+
+    // Add negative sign
+    if (is_negative) {
+        *ptr++ = '-';
+    }
+
+    *ptr = '\0';
+
+    // Reverse string
+    ptr--;
+    while (ptr1 < ptr) {
+        tmp_char = *ptr;
+        *ptr-- = *ptr1;
+        *ptr1++ = tmp_char;
+    }
+
+    return str;
+}
+
 volatile char out_char;
 int putchar(int c) {
     out_char = (char)c;
     return 0;
-};
+}
 
 int puts(const char *string)
 {
