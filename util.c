@@ -83,7 +83,16 @@ int memcmp(const void *s1, const void *s2, unsigned long n) {
     }
     return 0;
 }
+/*
+int strcmp(const char *s1, const char *s2) {
+    while (*s1 && (*s1 == *s2)) {
+        s1++;
+        s2++;
+    }
 
+    return (unsigned char)*s1 - (unsigned char)*s2;
+}
+*/
 int strncmp(const char *s1, const char *s2, unsigned long n) {
     for (unsigned long i = 0; i < n; i++) {
         unsigned char c1 = (unsigned char)s1[i];
@@ -99,6 +108,20 @@ int strncmp(const char *s1, const char *s2, unsigned long n) {
         }
     }
     return 0;
+}
+
+char *strcpy(char *dest, const char *src) {
+    char *original_dest = dest;
+
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+
+    *dest = '\0';  // Null-terminate the destination string
+
+    return original_dest;
 }
 
 unsigned long strlen(const char *s) {

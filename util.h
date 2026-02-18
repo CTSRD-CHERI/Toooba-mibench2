@@ -34,7 +34,11 @@ uintptr_t insn_len(uintptr_t pc);
 
 int memcmp(const void *s1, const void *s2, unsigned long n);
 
+//int strcmp(const char *s1, const char *s2);
+
 int strncmp(const char *s1, const char *s2, unsigned long n);
+
+char *strcpy(char *dest, const char *src);
 
 char *strchr(const char *s, int c);
 
