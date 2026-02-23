@@ -110,18 +110,37 @@ int strncmp(const char *s1, const char *s2, unsigned long n) {
     return 0;
 }
 
-char *strcpy(char *dest, const char *src) {
-    char *original_dest = dest;
+char *strcpy(char *dst, const char *src) {
+    char *ret = dst;
 
-    while (*src != '\0') {
-        *dest = *src;
-        dest++;
-        src++;
+    // Align dst to word boundary
+    while (((uintptr_t)dst & (sizeof(int) - 1)) != 0) {
+        if ((*dst++ = *src++) == '\0')
+            return ret;
     }
 
-    *dest = '\0';  // Null-terminate the destination string
+    int *wdst = (int *)dst;
+    const int *wsrc = (const int *)src;
 
-    return original_dest;
+    while (1) {
+        int w = *wsrc++;
+
+        // Magic to detect zero byte in word
+        int has_zero = ((w - 0x0101010101010101ULL) & 
+                           ~w & 
+                           0x8080808080808080ULL);
+
+        if (has_zero) {
+            // Fall back to byte copy to finish
+            dst = (char *)wdst;
+            src = (const char *)(wsrc - 1);
+            while ((*dst++ = *src++) != '\0')
+                ;
+            return ret;
+        }
+
+        *wdst++ = w;
+    }
 }
 
 unsigned long strlen(const char *s) {
